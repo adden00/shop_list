@@ -1,7 +1,9 @@
 package com.adden00.testtaskunisafe.features.shop_list_screen.data.repository
 
-class ShopListRepositoryImpl: ShopListRepository {
-    override fun createKey(): String {
-        TODO("Not yet implemented")
+import com.adden00.testtaskunisafe.features.shop_list_screen.data.ShopListApiClient
+
+class ShopListRepositoryImpl(private val api: ShopListApiClient): ShopListRepository {
+    override suspend fun createKey(): String {
+        return api.createTestKey()
     }
 }

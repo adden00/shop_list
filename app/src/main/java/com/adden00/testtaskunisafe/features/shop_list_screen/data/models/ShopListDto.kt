@@ -1,13 +1,25 @@
 package com.adden00.testtaskunisafe.features.shop_list_screen.data.models
 
-data class ShopListDto(
-    val id: Int,
-    val isSuccess: Boolean,
-    val items: List<ShipListItem>
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class ShopListResponse(
+    @SerialName("shop_list")
+    val shopLists: List<ShopListDto>,
+
+    @SerialName("success")
+    val isSuccess: Boolean
 )
 
-data class ShipListItem(
+@Serializable
+data class ShopListDto(
+    @SerialName ("id")
     val id: Int,
-    val created: Int,
-    val name: String
+
+    @SerialName ("name")
+    val name: String,
+
+    @SerialName ("created")
+    val created: String
 )
