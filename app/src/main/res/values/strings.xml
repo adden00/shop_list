@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">test task unisafe</string>
+    <string name="create_new_shopping_list">create new shopping list</string>
+    <string name="name">Name</string>
+    <string name="create">Create</string>
+    <string name="shopping_list">Shopping list</string>
 </resources>

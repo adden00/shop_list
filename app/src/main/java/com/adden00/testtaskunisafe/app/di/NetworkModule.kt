@@ -10,6 +10,7 @@ import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -24,6 +25,7 @@ class NetworkModule {
         return Retrofit.Builder()
             .client(client)
             .baseUrl(Constants.BASE_URL)
+            .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(
                 @OptIn(ExperimentalSerializationApi::class)
                 json.asConverterFactory("application/json".toMediaType())

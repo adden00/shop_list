@@ -1,7 +1,11 @@
 <resources>
     <style name="Base.Theme.TestTaskUnisafe" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="android:colorPrimary">@color/primary</item>
     </style>
 
-    <style name="Theme.TestTaskUnisafe" parent="Base.Theme.TestTaskUnisafe" />
+    <style name="Theme.TestTaskUnisafe" parent="Base.Theme.TestTaskUnisafe">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
+
+    </style>
 </resources>
