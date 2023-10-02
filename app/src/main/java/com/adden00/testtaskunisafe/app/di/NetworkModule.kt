@@ -1,7 +1,7 @@
 package com.adden00.testtaskunisafe.app.di
 
 import com.adden00.testtaskunisafe.core.Constants
-import com.adden00.testtaskunisafe.features.shop_list_screen.data.ShopListApiClient
+import com.adden00.testtaskunisafe.features.shop_lists_screen.data.ShopListApiClient
 import com.adden00.testtaskunisafe.features.start_screen.data.AuthApiClient
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module

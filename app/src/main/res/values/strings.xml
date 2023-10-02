@@ -13,4 +13,5 @@
     <string name="internet_error">Internet error</string>
     <string name="wring_shopping_list_id">Wring shopping list id!</string>
     <string name="copy_account_id">copy account id</string>
+    <string name="list_name">list_name</string>
 </resources>
