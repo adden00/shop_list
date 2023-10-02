@@ -6,9 +6,7 @@ import com.adden00.testtaskunisafe.features.shop_list_screen.domain.models.ShopL
 import com.adden00.testtaskunisafe.features.shop_list_screen.domain.repository.ShopListRepository
 
 class ShopListRepositoryImpl(private val api: ShopListApiClient): ShopListRepository {
-    override suspend fun createKey(): String {
-        return api.createTestKey()
-    }
+
 
     override suspend fun createShopList(name: String, token: String): Boolean {
         val response = api.createNewShopList(token, name)

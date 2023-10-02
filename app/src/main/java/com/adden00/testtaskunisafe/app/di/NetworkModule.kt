@@ -2,6 +2,7 @@ package com.adden00.testtaskunisafe.app.di
 
 import com.adden00.testtaskunisafe.core.Constants
 import com.adden00.testtaskunisafe.features.shop_list_screen.data.ShopListApiClient
+import com.adden00.testtaskunisafe.features.start_screen.data.AuthApiClient
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -20,7 +21,23 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideApiClient(client: OkHttpClient): ShopListApiClient {
+    fun provideShopListApiClient(client: OkHttpClient): ShopListApiClient {
+        val json = Json { ignoreUnknownKeys = true }
+        return Retrofit.Builder()
+            .client(client)
+            .baseUrl(Constants.BASE_URL)
+            .addConverterFactory(
+                @OptIn(ExperimentalSerializationApi::class)
+                json.asConverterFactory("application/json".toMediaType())
+            )
+            .build()
+            .create(ShopListApiClient::class.java)
+    }
+
+
+    @Provides
+    @Singleton
+    fun provideAuthApiClient(client: OkHttpClient): AuthApiClient {
         val json = Json { ignoreUnknownKeys = true }
         return Retrofit.Builder()
             .client(client)
@@ -31,8 +48,10 @@ class NetworkModule {
                 json.asConverterFactory("application/json".toMediaType())
             )
             .build()
-            .create(ShopListApiClient::class.java)
+            .create(AuthApiClient::class.java)
     }
+
+
 
     @Provides
     @Singleton

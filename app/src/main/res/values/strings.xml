@@ -4,4 +4,13 @@
     <string name="name">Name</string>
     <string name="create">Create</string>
     <string name="shopping_list">Shopping list</string>
+    <string name="welcome_to_shopping_lists_app">Welcome to shopping lists app!</string>
+    <string name="create_new_account">create new account</string>
+    <string name="import_account_by_id">Import account by id</string>
+    <string name="id">id</string>
+    <string name="log_in">Log in</string>
+    <string name="log_out">log out</string>
+    <string name="internet_error">Internet error</string>
+    <string name="wring_shopping_list_id">Wring shopping list id!</string>
+    <string name="copy_account_id">copy account id</string>
 </resources>
