@@ -18,8 +18,8 @@ import com.adden00.testtaskunisafe.app.di.ui.DaggerShopListItemsComponent
 import com.adden00.testtaskunisafe.app.getAppComponent
 import com.adden00.testtaskunisafe.core.Constants
 import com.adden00.testtaskunisafe.core.ViewModelFactory
-import com.adden00.testtaskunisafe.core.customGetParcelable
 import com.adden00.testtaskunisafe.core.utills.OnClickListener
+import com.adden00.testtaskunisafe.core.utills.customGetParcelable
 import com.adden00.testtaskunisafe.databinding.DialogConfirmBinding
 import com.adden00.testtaskunisafe.databinding.DialogInputBinding
 import com.adden00.testtaskunisafe.databinding.FragmentShopListItemsBinding
@@ -106,7 +106,6 @@ class ShopListItemsFragment : Fragment() {
             is ShopListItemsEffect.ShowInternetError -> {
                 showSnackBar(getString(R.string.internet_error))
             }
-
             is ShopListItemsEffect.Waiting -> Unit
         }
     }
@@ -138,16 +137,19 @@ class ShopListItemsFragment : Fragment() {
             .Builder(requireContext())
             .setView(dialogBinding.root)
             .create()
-        dialogBinding.btnYes.setOnClickListener {
-            viewModel.newEvent(ShopListItemsEvent.RemoveItem(currentShopList.id, item.id))
-            dialog.dismiss()
-        }
-        dialogBinding.btnNo.setOnClickListener {
-            dialog.dismiss()
-        }
-        dialogBinding.tvConfirmMessage.text = getString(R.string.do_you_want_to_remove) + item.name + "?"
-        dialog.window?.decorView?.setBackgroundResource(R.drawable.bg_dialog)
 
+        with(dialogBinding) {
+            btnYes.setOnClickListener {
+                viewModel.newEvent(ShopListItemsEvent.RemoveItem(currentShopList.id, item.id))
+                dialog.dismiss()
+            }
+            btnNo.setOnClickListener {
+                dialog.dismiss()
+            }
+            tvConfirmMessage.text = getString(R.string.do_you_want_to_remove) + item.name + "?"
+        }
+
+        dialog.window?.decorView?.setBackgroundResource(R.drawable.bg_dialog)
         dialog.show()
     }
 
@@ -157,22 +159,22 @@ class ShopListItemsFragment : Fragment() {
         val dialog =
             AlertDialog.Builder(requireContext()).apply { setView(dialogBinding.root) }.create()
 
-        dialogBinding.edInput.hint = getString(R.string.name)
-        dialogBinding.tvTitle.text = getString(R.string.add_new_item)
-        dialogBinding.btnConfirm.text = getString(R.string.add)
-        
-        dialogBinding.btnConfirm.setOnClickListener {
-            viewModel.newEvent(
-                ShopListItemsEvent.AddNewItem(
-                    currentShopList.id,
-                    dialogBinding.edInput.text.toString()
+        with(dialogBinding) {
+            edInput.hint = getString(R.string.name)
+            tvTitle.text = getString(R.string.add_new_item)
+            btnConfirm.text = getString(R.string.add)
+            btnConfirm.setOnClickListener {
+                viewModel.newEvent(
+                    ShopListItemsEvent.AddNewItem(
+                        currentShopList.id,
+                        edInput.text.toString()
+                    )
                 )
-            )
-            dialog.dismiss()
-        }
-
-        dialogBinding.edInput.addTextChangedListener {
-            dialogBinding.btnConfirm.isEnabled = !it.isNullOrEmpty()
+                dialog.dismiss()
+            }
+            edInput.addTextChangedListener {
+                btnConfirm.isEnabled = !it.isNullOrEmpty()
+            }
         }
 
         dialog.window?.decorView?.setBackgroundResource(R.drawable.bg_dialog)

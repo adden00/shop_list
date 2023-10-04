@@ -19,9 +19,7 @@ import dagger.multibindings.IntoMap
     modules = [ShopListItemsModule::class]
 )
 interface ShopListItemsComponent {
-
     fun inject(fragment: ShopListItemsFragment)
-
     @Component.Factory
     interface Factory {
         fun create(appComponent: AppComponent): ShopListItemsComponent
@@ -30,13 +28,12 @@ interface ShopListItemsComponent {
 
 @Module
 interface ShopListItemsModule {
-
     @Binds
     fun bindViewModelFactory(impl: ViewModelFactory): ViewModelProvider.Factory
 
     @IntoMap
     @ViewModelKey(ShopListItemsViewModel::class)
     @Binds
-    fun bindMessengerViewModel(impl: ShopListItemsViewModel): ViewModel
+    fun bindListItemsViewModel(impl: ShopListItemsViewModel): ViewModel
 
 }

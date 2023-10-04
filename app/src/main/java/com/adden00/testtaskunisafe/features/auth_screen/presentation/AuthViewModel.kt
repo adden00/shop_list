@@ -45,7 +45,6 @@ class AuthViewModel @Inject constructor(
     }
 
 
-
     fun logInAccount(token: String) {
         _authScreenState.update { it.copy(isLoading = true) }
         viewModelScope.launch {
@@ -70,7 +69,6 @@ class AuthViewModel @Inject constructor(
                 _authScreenState.update { it.copy(isLoading = false) }
                 _authEffect.update { AuthScreenEffect.Waiting }
             }
-
         }
     }
 }

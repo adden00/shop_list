@@ -1,4 +1,4 @@
-package com.adden00.testtaskunisafe.core
+package com.adden00.testtaskunisafe.core.utills
 
 import android.os.Build
 import android.os.Bundle

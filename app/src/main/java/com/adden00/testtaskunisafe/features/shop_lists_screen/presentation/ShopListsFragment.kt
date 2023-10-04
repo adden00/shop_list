@@ -160,14 +160,18 @@ class ShopListsFragment : Fragment() {
             .Builder(requireContext())
             .setView(dialogBinding.root)
             .create()
-        dialogBinding.btnYes.setOnClickListener {
-            viewModel.newEvent(ShopListEvent.RemoveShopList(item.id))
-            dialog.dismiss()
+
+        with(dialogBinding) {
+            btnYes.setOnClickListener {
+                viewModel.newEvent(ShopListEvent.RemoveShopList(item.id))
+                dialog.dismiss()
+            }
+            btnNo.setOnClickListener {
+                dialog.dismiss()
+            }
+            tvConfirmMessage.text = getString(R.string.do_you_want_to_remove) + item.name + "?"
         }
-        dialogBinding.btnNo.setOnClickListener {
-            dialog.dismiss()
-        }
-        dialogBinding.tvConfirmMessage.text = getString(R.string.do_you_want_to_remove) + item.name + "?"
+
         dialog.window?.decorView?.setBackgroundResource(R.drawable.bg_dialog)
         dialog.show()
     }
@@ -179,17 +183,19 @@ class ShopListsFragment : Fragment() {
         val dialog =
             AlertDialog.Builder(requireContext()).apply { setView(dialogBinding.root) }.create()
 
-        dialogBinding.edInput.hint = getString(R.string.name)
-        dialogBinding.tvTitle.text = getString(R.string.create_new_shopping_list)
-        dialogBinding.btnConfirm.text = getString(R.string.create)
+        with(dialogBinding) {
+            edInput.hint = getString(R.string.name)
+            tvTitle.text = getString(R.string.create_new_shopping_list)
+            btnConfirm.text = getString(R.string.create)
 
-        dialogBinding.btnConfirm.setOnClickListener {
-            viewModel.newEvent(ShopListEvent.CreateShopList(dialogBinding.edInput.text.toString()))
-            dialog.dismiss()
-        }
+            btnConfirm.setOnClickListener {
+                viewModel.newEvent(ShopListEvent.CreateShopList(edInput.text.toString()))
+                dialog.dismiss()
+            }
 
-        dialogBinding.edInput.addTextChangedListener {
-            dialogBinding.btnConfirm.isEnabled = !it.isNullOrEmpty()
+            edInput.addTextChangedListener {
+                btnConfirm.isEnabled = !it.isNullOrEmpty()
+            }
         }
 
         dialog.window?.decorView?.setBackgroundResource(R.drawable.bg_dialog)

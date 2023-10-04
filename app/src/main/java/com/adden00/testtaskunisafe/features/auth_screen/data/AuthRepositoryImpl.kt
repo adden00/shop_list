@@ -12,6 +12,4 @@ class AuthRepositoryImpl(private val api: AuthApiClient): AuthRepository {
         val response = api.auth(token)
         return response.isSuccess
     }
-
-
 }

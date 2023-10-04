@@ -11,5 +11,4 @@ class CopyAccountIdUseCase @Inject constructor(private val prefs: SharedPreferen
             copy(it)
         }
     }
-
 }

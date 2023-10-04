@@ -12,6 +12,5 @@ class CreateTokenUseCase @Inject constructor(
     suspend operator fun invoke() {
         val newToken = repository.createKey()
         prefs.edit().putString(Constants.TOKEN_KEY, newToken).apply()
-
     }
 }

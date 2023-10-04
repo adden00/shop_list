@@ -71,10 +71,8 @@ class AuthFragment : Fragment() {
     }
 
     private fun render(state: AuthScreenState) {
-        binding.pbar.visibility = if(state.isLoading) View.VISIBLE else View.GONE
-
+        binding.pbar.visibility = if (state.isLoading) View.VISIBLE else View.GONE
     }
-
 
         private fun handleEffect(effect: AuthScreenEffect) {
             when(effect) {
@@ -107,16 +105,18 @@ class AuthFragment : Fragment() {
         val dialog =
             AlertDialog.Builder(requireContext()).apply { setView(dialogBinding.root) }.create()
 
-        dialogBinding.edInput.hint = getString(R.string.id)
-        dialogBinding.tvTitle.text = getString(R.string.import_account_by_id)
-        dialogBinding.btnConfirm.text = getString(R.string.log_in)
+        with(dialogBinding) {
+            edInput.hint = getString(R.string.id)
+            tvTitle.text = getString(R.string.import_account_by_id)
+            btnConfirm.text = getString(R.string.log_in)
 
-        dialogBinding.edInput.addTextChangedListener {
-            dialogBinding.btnConfirm.isEnabled = !it.isNullOrEmpty()
-        }
-        dialogBinding.btnConfirm.setOnClickListener {
-            viewModel.logInAccount(dialogBinding.edInput.text.toString())
-            dialog.dismiss()
+            edInput.addTextChangedListener {
+                btnConfirm.isEnabled = !it.isNullOrEmpty()
+            }
+            btnConfirm.setOnClickListener {
+                viewModel.logInAccount(edInput.text.toString())
+                dialog.dismiss()
+            }
         }
         dialog.window?.decorView?.setBackgroundResource(R.drawable.bg_dialog)
         dialog.show()

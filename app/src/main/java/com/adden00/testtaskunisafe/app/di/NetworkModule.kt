@@ -50,7 +50,6 @@ class NetworkModule {
             .create(ShopListItemApiClient::class.java)
     }
 
-
     @Provides
     @Singleton
     fun provideAuthApiClient(client: OkHttpClient): AuthApiClient {
@@ -66,8 +65,6 @@ class NetworkModule {
             .build()
             .create(AuthApiClient::class.java)
     }
-
-
 
     @Provides
     @Singleton

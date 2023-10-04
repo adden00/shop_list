@@ -7,7 +7,6 @@ import retrofit2.http.Query
 
 interface AuthApiClient {
 
-
     @POST ("CreateTestKey")
     suspend fun createTestKey(): String
 

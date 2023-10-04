@@ -12,19 +12,16 @@ import javax.inject.Inject
 class StartViewModel @Inject constructor(
     private val internetChecker: InternetChecker,
     private val getTokenUseCase: GetTokenUseCase
-): ViewModel() {
+) : ViewModel() {
 
-
-    private val _startScreenState= MutableStateFlow(StartScreenState())
+    private val _startScreenState = MutableStateFlow(StartScreenState())
     val startScreenEffects: StateFlow<StartScreenState> get() = _startScreenState.asStateFlow()
-
 
     init {
         tryNavigate()
     }
 
     fun tryNavigate() {
-
         _startScreenState.update { it.copy(needToAuth = false, tokenReceived = false) }
         if (internetChecker.isOnline()) {
             _startScreenState.update { it.copy(internetIsConnected = true) }
@@ -33,10 +30,7 @@ class StartViewModel @Inject constructor(
                 _startScreenState.update { it.copy(needToAuth = true) }
             else
                 _startScreenState.update { it.copy(tokenReceived = true) }
-        }
-        else
+        } else
             _startScreenState.update { it.copy(internetIsConnected = false) }
-
     }
-
 }

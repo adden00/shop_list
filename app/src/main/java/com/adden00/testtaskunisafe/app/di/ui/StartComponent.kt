@@ -37,6 +37,5 @@ interface StartModule {
     @IntoMap
     @ViewModelKey(StartViewModel::class)
     @Binds
-    fun bindMessengerViewModel(impl: StartViewModel): ViewModel
-
+    fun bindStartViewModel(impl: StartViewModel): ViewModel
 }

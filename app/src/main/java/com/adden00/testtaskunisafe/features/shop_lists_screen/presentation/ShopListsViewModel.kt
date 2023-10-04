@@ -1,8 +1,8 @@
 package com.adden00.testtaskunisafe.features.shop_lists_screen.presentation
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.adden00.testtaskunisafe.core.TokenIsNullException
 import com.adden00.testtaskunisafe.features.shop_lists_screen.domain.use_cases.CopyAccountIdUseCase
 import com.adden00.testtaskunisafe.features.shop_lists_screen.domain.use_cases.CreateShopListUseCase
 import com.adden00.testtaskunisafe.features.shop_lists_screen.domain.use_cases.GetAllShopListsUseCase
@@ -45,11 +45,11 @@ class ShopListsViewModel @Inject constructor(
                     try {
                         val newList = createShopListUseCase(event.name)
                         _shopListState.update { it.copy(list = newList.map { item -> item.toPresentation() }) }
+                    } catch (e: TokenIsNullException) {
+                        _shopListEffect.update { ShopListEffect.LogOut }
                     } catch (e: Exception) {
-                        Log.d("my_log", e.toString())
                         _shopListEffect.update { ShopListEffect.InternetError }
-                    }
-                    finally {
+                    } finally {
                         _shopListEffect.update { ShopListEffect.Waiting }
                         _shopListState.update { it.copy(isUpdating = false) }
                     }
@@ -62,14 +62,13 @@ class ShopListsViewModel @Inject constructor(
                     try {
                         val result = getAllShopListsUseCase()
                         _shopListState.update { it.copy(list = result.map { item -> item.toPresentation() }) }
-
+                    } catch (e: TokenIsNullException) {
+                        _shopListEffect.update { ShopListEffect.LogOut }
                     } catch (e: Exception) {
-                        Log.d("my_log", e.toString())
                         _shopListEffect.update { ShopListEffect.InternetError }
                     } finally {
                         _shopListState.update { it.copy(isLoading = false) }
                         _shopListEffect.update { ShopListEffect.Waiting }
-
                     }
                 }
             }
@@ -78,7 +77,6 @@ class ShopListsViewModel @Inject constructor(
                 logOutUseCase()
                 _shopListEffect.update { ShopListEffect.LogOut }
                 _shopListEffect.update { ShopListEffect.Waiting }
-
             }
 
             is ShopListEvent.CopyShopListId -> {
@@ -91,11 +89,11 @@ class ShopListsViewModel @Inject constructor(
                     try {
                         val newList = removeShopListUseCase(event.listId)
                         _shopListState.update { it.copy(list = newList.map { item -> item.toPresentation() }) }
+                    } catch (e: TokenIsNullException) {
+                        _shopListEffect.update { ShopListEffect.LogOut }
                     } catch (e: Exception) {
-                        Log.d("my_log", e.toString())
                         _shopListEffect.update { ShopListEffect.InternetError }
-                    }
-                    finally {
+                    } finally {
                         _shopListEffect.update { ShopListEffect.Waiting }
                         _shopListState.update { it.copy(isUpdating = false) }
                     }

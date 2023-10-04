@@ -16,15 +16,14 @@ class ShopListsRepositoryImpl(private val api: ShopListApiClient): ShopListsRepo
 
     override suspend fun getAllShopLists(token: String): List<ShopListModelDomain> {
         val response = api.getAllShopLists(token)
-        if(response.isSuccess) {
-            return response.shopLists.map {it.toDomain()}
-        }
-        else
+        if (response.isSuccess) {
+            return response.shopLists.map { it.toDomain() }
+        } else
             throw Exception("response was not success!")
     }
 
     override suspend fun removeShopList(token: String, listId: Int): Boolean {
         val response = api.removeShopList(token, listId)
         return response.isSuccess
-    } //TODO обработать в презентейшене
+    }
 }

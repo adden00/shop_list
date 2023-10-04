@@ -58,9 +58,7 @@ class StartFragment: Fragment() {
         }
     }
 
-
     private fun subscribeOnState() {
-
         viewModel.startScreenEffects
             .flowWithLifecycle(lifecycle)
             .onEach(::render)
@@ -76,5 +74,4 @@ class StartFragment: Fragment() {
             findNavController().navigate(R.id.action_startFragment_to_shopListFragment)
         }
     }
-
 }

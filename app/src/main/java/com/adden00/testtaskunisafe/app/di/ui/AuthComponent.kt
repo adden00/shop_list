@@ -19,9 +19,7 @@ import dagger.multibindings.IntoMap
     modules = [AuthModule::class]
 )
 interface AuthComponent {
-
     fun inject(fragment: AuthFragment)
-
     @Component.Factory
     interface Factory {
         fun create(appComponent: AppComponent): AuthComponent
@@ -37,6 +35,6 @@ interface AuthModule {
     @IntoMap
     @ViewModelKey(AuthViewModel::class)
     @Binds
-    fun bindMessengerViewModel(impl: AuthViewModel): ViewModel
+    fun bindAuthViewModel(impl: AuthViewModel): ViewModel
 
 }

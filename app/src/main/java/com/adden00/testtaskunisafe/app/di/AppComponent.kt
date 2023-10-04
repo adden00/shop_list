@@ -19,8 +19,6 @@ interface AppComponent {
     fun sharedPref(): SharedPreferences
     fun internetChecker(): InternetChecker
 
-
-
     @Component.Factory
     interface Factory {
         fun create(@BindsInstance context: Context): AppComponent
