@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.adden00.testtaskunisafe.features.auth_screen.domain.use_cases.CreateTokenUseCase
-import com.adden00.testtaskunisafe.features.auth_screen.domain.use_cases.GetTokenUseCase
 import com.adden00.testtaskunisafe.features.auth_screen.domain.use_cases.LogInUseCase
 import com.adden00.testtaskunisafe.features.auth_screen.presentation.mvi.AuthScreenEffect
 import com.adden00.testtaskunisafe.features.auth_screen.presentation.mvi.AuthScreenState
@@ -19,7 +18,6 @@ import javax.inject.Inject
 class AuthViewModel @Inject constructor(
     private val createTokenUseCase: CreateTokenUseCase,
     private val logInUseCase: LogInUseCase,
-    private val getTokenUseCase: GetTokenUseCase
 ) : ViewModel() {
 
     private val _authScreenState = MutableStateFlow(AuthScreenState())
@@ -28,9 +26,6 @@ class AuthViewModel @Inject constructor(
     private val _authEffect = MutableStateFlow<AuthScreenEffect>(AuthScreenEffect.Waiting)
     val authEffect: StateFlow<AuthScreenEffect> get() = _authEffect.asStateFlow()
 
-    init {
-        tryLogIn()
-    }
 
     fun createNewAccount() {
         _authScreenState.update { it.copy(isLoading = true) }
@@ -49,12 +44,6 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    private fun tryLogIn() {
-        val token = getTokenUseCase()
-        token?.let {
-            logInAccount(it)
-        }
-    }
 
 
     fun logInAccount(token: String) {

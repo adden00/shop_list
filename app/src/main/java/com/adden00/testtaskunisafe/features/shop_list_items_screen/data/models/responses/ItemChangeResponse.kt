@@ -8,6 +8,6 @@ data class ItemChangeResponse(
     @SerialName ("success")
     val isSuccess: Boolean,
 
-    @SerialName ("item_id")
-    val itemId: Int
+//    @SerialName ("item_id")
+//    val itemId: Int
 )

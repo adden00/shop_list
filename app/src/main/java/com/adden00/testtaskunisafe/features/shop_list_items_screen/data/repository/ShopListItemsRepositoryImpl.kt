@@ -17,7 +17,10 @@ class ShopListItemsRepositoryImpl(private val api: ShopListItemApiClient): ShopL
     override suspend fun addNewItem(listId: Int, itemName: String): Boolean {
         val response = api.addItemToList( listId, itemName)
         return response.isSuccess
-        // TODO update current list
     }
 
+    override suspend fun removeItem(itemId: Int): Boolean {
+        val response = api.deleteItem(itemId)
+        return response.isSuccess
+            }
 }

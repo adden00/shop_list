@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="text">
+        <item name="android:fontFamily">@font/selfprodisplay</item>
+        <item name="android:textFontWeight" tools:targetApi="p">500</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="title_text" parent="text">
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="button_style" parent="text" >
+        <item name="textAllCaps">false</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:background">@drawable/bg_button</item>
+    </style>
+
+    
+</resources>

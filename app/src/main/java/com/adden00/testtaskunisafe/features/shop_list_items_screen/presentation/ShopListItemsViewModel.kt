@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.adden00.testtaskunisafe.features.shop_list_items_screen.domain.use_cases.AddNewItemUseCase
 import com.adden00.testtaskunisafe.features.shop_list_items_screen.domain.use_cases.LoadAllItemsUseCase
+import com.adden00.testtaskunisafe.features.shop_list_items_screen.domain.use_cases.RemoveItemUseCase
 import com.adden00.testtaskunisafe.features.shop_list_items_screen.presentation.mvi.ShopListItemsEffect
 import com.adden00.testtaskunisafe.features.shop_list_items_screen.presentation.mvi.ShopListItemsEvent
 import com.adden00.testtaskunisafe.features.shop_list_items_screen.presentation.mvi.ShopListItemsState
@@ -17,6 +18,7 @@ import javax.inject.Inject
 class ShopListItemsViewModel @Inject constructor(
     private val addNewItemUseCase: AddNewItemUseCase,
     private val loadAllItemsUseCase: LoadAllItemsUseCase,
+    private val removeItemUseCase: RemoveItemUseCase
 ): ViewModel() {
     private val _shopListItemsState = MutableStateFlow(ShopListItemsState())
     val shopListItemsState: StateFlow<ShopListItemsState> get() = _shopListItemsState.asStateFlow()
@@ -27,7 +29,7 @@ class ShopListItemsViewModel @Inject constructor(
 
     fun newEvent(event: ShopListItemsEvent) {
         when(event) {
-            is ShopListItemsEvent.AddNewItems -> {
+            is ShopListItemsEvent.AddNewItem -> {
                 _shopListItemsState.update { it.copy(isUpdating = true) }
                 viewModelScope.launch {
                     try {
@@ -56,7 +58,6 @@ class ShopListItemsViewModel @Inject constructor(
                     }
                     catch (e: Exception) {
                         _shopListItemsEffect.update { ShopListItemsEffect.ShowInternetError }
-                        throw e
                     }
                     finally {
                         _shopListItemsState.update { it.copy(isLoading = false) }
@@ -65,6 +66,24 @@ class ShopListItemsViewModel @Inject constructor(
                     }
                 }
 
+            }
+
+            is ShopListItemsEvent.RemoveItem -> {
+                _shopListItemsState.update { it.copy(isUpdating = true) }
+                viewModelScope.launch {
+                    try {
+                        val newList = removeItemUseCase(event.listId, event.itemId).map{it.toPresentation()}
+                        _shopListItemsState.update { it.copy(list = newList) }
+                    }
+                    catch (e: Exception) {
+                        _shopListItemsEffect.update { ShopListItemsEffect.ShowInternetError }
+
+                    }
+                    finally {
+                        _shopListItemsState.update { it.copy(isUpdating = false) }
+                        _shopListItemsEffect.update { ShopListItemsEffect.Waiting }
+                    }
+                }
             }
         }
     }

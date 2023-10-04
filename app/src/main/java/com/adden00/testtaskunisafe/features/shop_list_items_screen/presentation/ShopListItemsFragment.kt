@@ -1,5 +1,6 @@
 package com.adden00.testtaskunisafe.features.shop_list_items_screen.presentation
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
@@ -18,8 +19,11 @@ import com.adden00.testtaskunisafe.app.getAppComponent
 import com.adden00.testtaskunisafe.core.Constants
 import com.adden00.testtaskunisafe.core.ViewModelFactory
 import com.adden00.testtaskunisafe.core.customGetParcelable
-import com.adden00.testtaskunisafe.databinding.DialogNewItemBinding
+import com.adden00.testtaskunisafe.core.utills.OnClickListener
+import com.adden00.testtaskunisafe.databinding.DialogConfirmBinding
+import com.adden00.testtaskunisafe.databinding.DialogInputBinding
 import com.adden00.testtaskunisafe.databinding.FragmentShopListItemsBinding
+import com.adden00.testtaskunisafe.features.shop_list_items_screen.presentation.models.ShopListItemModel
 import com.adden00.testtaskunisafe.features.shop_list_items_screen.presentation.mvi.ShopListItemsEffect
 import com.adden00.testtaskunisafe.features.shop_list_items_screen.presentation.mvi.ShopListItemsEvent
 import com.adden00.testtaskunisafe.features.shop_list_items_screen.presentation.mvi.ShopListItemsState
@@ -43,7 +47,12 @@ class ShopListItemsFragment : Fragment() {
     lateinit var viewModelFactory: ViewModelFactory
     private val viewModel: ShopListItemsViewModel by viewModels { viewModelFactory }
     private val adapter by lazy {
-        ShopListItemsAdapter()
+        ShopListItemsAdapter(object : OnClickListener<ShopListItemModel> {
+            override fun onClick(item: ShopListItemModel) = Unit
+            override fun onLongClick(item: ShopListItemModel) {
+                removeListDialog(item)
+            }
+        })
     }
 
     override fun onAttach(context: Context) {
@@ -85,6 +94,8 @@ class ShopListItemsFragment : Fragment() {
     }
 
     private fun render(state: ShopListItemsState) {
+        binding.tvEmptyList.visibility = if(state.list.isEmpty()) View.VISIBLE else View.GONE
+        binding.swipeRefresh.isRefreshing = false
         binding.pbarLoading.visibility = if (state.isLoading) View.VISIBLE else View.GONE
         binding.pbarIsUpdating.visibility = if (state.isUpdating) View.VISIBLE else View.GONE
         adapter.submitList(state.list)
@@ -101,11 +112,14 @@ class ShopListItemsFragment : Fragment() {
     }
 
     private fun setUi() {
-        binding.toolbar.title = "name: ${currentShopList.name}, id: ${currentShopList.id}"
+        binding.toolbar.title = currentShopList.name
         binding.rcShopListItems.layoutManager = LinearLayoutManager(requireContext())
         binding.rcShopListItems.adapter = adapter
         binding.fabNewItem.setOnClickListener {
             showCreateItemDialog()
+        }
+        binding.swipeRefresh.setOnRefreshListener {
+            viewModel.newEvent(ShopListItemsEvent.LoadAllItems(currentShopList.id))
         }
     }
 
@@ -117,28 +131,51 @@ class ShopListItemsFragment : Fragment() {
         ).show()
     }
 
+    @SuppressLint("SetTextI18n")
+    private fun removeListDialog(item: ShopListItemModel) {
+        val dialogBinding = DialogConfirmBinding.inflate(LayoutInflater.from(requireContext()))
+        val dialog = AlertDialog
+            .Builder(requireContext())
+            .setView(dialogBinding.root)
+            .create()
+        dialogBinding.btnYes.setOnClickListener {
+            viewModel.newEvent(ShopListItemsEvent.RemoveItem(currentShopList.id, item.id))
+            dialog.dismiss()
+        }
+        dialogBinding.btnNo.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialogBinding.tvConfirmMessage.text = getString(R.string.do_you_want_to_remove) + item.name + "?"
+        dialog.window?.decorView?.setBackgroundResource(R.drawable.bg_dialog)
+
+        dialog.show()
+    }
+
     private fun showCreateItemDialog() {
         val dialogBinding =
-            DialogNewItemBinding.inflate(LayoutInflater.from(requireContext()))
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setView(dialogBinding.root)
-        val dialog = builder.create()
+            DialogInputBinding.inflate(LayoutInflater.from(requireContext()))
+        val dialog =
+            AlertDialog.Builder(requireContext()).apply { setView(dialogBinding.root) }.create()
 
-        dialogBinding.btnCreate.setOnClickListener {
+        dialogBinding.edInput.hint = getString(R.string.name)
+        dialogBinding.tvTitle.text = getString(R.string.add_new_item)
+        dialogBinding.btnConfirm.text = getString(R.string.add)
+        
+        dialogBinding.btnConfirm.setOnClickListener {
             viewModel.newEvent(
-                ShopListItemsEvent.AddNewItems(
+                ShopListItemsEvent.AddNewItem(
                     currentShopList.id,
-                    dialogBinding.edName.text.toString()
+                    dialogBinding.edInput.text.toString()
                 )
             )
             dialog.dismiss()
         }
 
-        dialogBinding.edName.addTextChangedListener {
-            dialogBinding.btnCreate.isEnabled = !it.isNullOrEmpty()
+        dialogBinding.edInput.addTextChangedListener {
+            dialogBinding.btnConfirm.isEnabled = !it.isNullOrEmpty()
         }
 
-        dialog.window?.decorView?.setBackgroundResource(R.drawable.dialog_bg)
+        dialog.window?.decorView?.setBackgroundResource(R.drawable.bg_dialog)
         dialog.show()
     }
 }

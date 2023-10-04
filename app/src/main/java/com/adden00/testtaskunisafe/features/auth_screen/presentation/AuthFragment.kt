@@ -16,7 +16,7 @@ import com.adden00.testtaskunisafe.R
 import com.adden00.testtaskunisafe.app.di.ui.DaggerAuthComponent
 import com.adden00.testtaskunisafe.app.getAppComponent
 import com.adden00.testtaskunisafe.core.ViewModelFactory
-import com.adden00.testtaskunisafe.databinding.DialogLoginBinding
+import com.adden00.testtaskunisafe.databinding.DialogInputBinding
 import com.adden00.testtaskunisafe.databinding.FragmentAuthBinding
 import com.adden00.testtaskunisafe.features.auth_screen.presentation.mvi.AuthScreenEffect
 import com.adden00.testtaskunisafe.features.auth_screen.presentation.mvi.AuthScreenState
@@ -90,7 +90,7 @@ class AuthFragment : Fragment() {
     }
 
     private fun navigateToShopLists() {
-        findNavController().navigate(R.id.action_startFragment_to_shopListFragment)
+        findNavController().navigate(R.id.action_authFragment_to_shopListFragment)
     }
 
     private fun setUi() {
@@ -103,18 +103,22 @@ class AuthFragment : Fragment() {
     }
 
     private fun openLoginDialog() {
-        val dialogBinding = DialogLoginBinding.inflate(LayoutInflater.from(requireContext()))
+        val dialogBinding = DialogInputBinding.inflate(LayoutInflater.from(requireContext()))
         val dialog =
             AlertDialog.Builder(requireContext()).apply { setView(dialogBinding.root) }.create()
 
-        dialogBinding.edId.addTextChangedListener {
-            dialogBinding.btnLogin.isEnabled = !it.isNullOrEmpty()
+        dialogBinding.edInput.hint = getString(R.string.id)
+        dialogBinding.tvTitle.text = getString(R.string.import_account_by_id)
+        dialogBinding.btnConfirm.text = getString(R.string.log_in)
+
+        dialogBinding.edInput.addTextChangedListener {
+            dialogBinding.btnConfirm.isEnabled = !it.isNullOrEmpty()
         }
-        dialogBinding.btnLogin.setOnClickListener {
-            viewModel.logInAccount(dialogBinding.edId.text.toString())
+        dialogBinding.btnConfirm.setOnClickListener {
+            viewModel.logInAccount(dialogBinding.edInput.text.toString())
             dialog.dismiss()
         }
-        dialog.window?.decorView?.setBackgroundResource(R.drawable.dialog_bg)
+        dialog.window?.decorView?.setBackgroundResource(R.drawable.bg_dialog)
         dialog.show()
     }
 

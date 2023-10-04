@@ -7,5 +7,4 @@ import javax.inject.Inject
 class LoadAllItemsUseCase @Inject constructor(private val repository: ShopListItemsRepository) {
     suspend operator fun invoke(listId: Int): List<ShopListItemModelDomain> =
         repository.getAllItems(listId)
-
 }

@@ -54,6 +54,6 @@ dependencies {
     implementation deps.kotlinx_serialization
     implementation deps.swipe_refresh
     implementation deps.dagger
-    implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'
+    implementation deps.scalars_converter
     kapt deps.daggetKapt
 }

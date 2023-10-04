@@ -18,4 +18,9 @@ interface ShopListItemApiClient {
         @Query ("value") itemName: String,
         @Query ("n") count: Int = 1
     ): ItemChangeResponse
+
+    @POST ("CrossItOff")
+    suspend fun deleteItem(
+        @Query ("id") ItemId: Int,
+    ): ItemChangeResponse
 }

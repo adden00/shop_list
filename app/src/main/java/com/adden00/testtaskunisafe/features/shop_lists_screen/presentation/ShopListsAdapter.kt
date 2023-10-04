@@ -5,10 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.adden00.testtaskunisafe.core.utills.OnClickListener
 import com.adden00.testtaskunisafe.databinding.ShopListsItemBinding
 import com.adden00.testtaskunisafe.features.shop_lists_screen.presentation.models.ShopListModel
 
-class ShopListsAdapter(private val listener: OnClickListener): ListAdapter<ShopListModel, ShopListsAdapter.ItemHolder>(object : DiffUtil.ItemCallback<ShopListModel>() {
+class ShopListsAdapter(private val listener: OnClickListener<ShopListModel>): ListAdapter<ShopListModel, ShopListsAdapter.ItemHolder>(object : DiffUtil.ItemCallback<ShopListModel>() {
     override fun areItemsTheSame(oldItem: ShopListModel, newItem: ShopListModel): Boolean = oldItem.id == newItem.id
     override fun areContentsTheSame(oldItem: ShopListModel, newItem: ShopListModel): Boolean = oldItem == newItem
 }) {
@@ -32,8 +33,5 @@ class ShopListsAdapter(private val listener: OnClickListener): ListAdapter<ShopL
     override fun onBindViewHolder(holder: ItemHolder, position: Int) {
         holder.render(getItem(position))
     }
-    interface OnClickListener {
-        fun onClick(item: ShopListModel)
-        fun onLongClick(item: ShopListModel)
-    }
+
 }

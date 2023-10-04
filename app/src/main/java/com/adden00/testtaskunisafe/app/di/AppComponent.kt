@@ -2,6 +2,7 @@ package com.adden00.testtaskunisafe.app.di
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.adden00.testtaskunisafe.core.utills.InternetChecker
 import com.adden00.testtaskunisafe.features.auth_screen.domain.AuthRepository
 import com.adden00.testtaskunisafe.features.shop_list_items_screen.domain.ShopListItemsRepository
 import com.adden00.testtaskunisafe.features.shop_lists_screen.domain.repository.ShopListsRepository
@@ -16,6 +17,8 @@ interface AppComponent {
     fun authRepository(): AuthRepository
     fun shopListItemsRepository(): ShopListItemsRepository
     fun sharedPref(): SharedPreferences
+    fun internetChecker(): InternetChecker
+
 
 
     @Component.Factory

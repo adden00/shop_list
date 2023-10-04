@@ -6,10 +6,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.adden00.testtaskunisafe.core.utills.OnClickListener
 import com.adden00.testtaskunisafe.databinding.ShopListItemItemBinding
 import com.adden00.testtaskunisafe.features.shop_list_items_screen.presentation.models.ShopListItemModel
 
-class ShopListItemsAdapter: ListAdapter<ShopListItemModel, ShopListItemsAdapter.ItemHolder>(object : DiffUtil.ItemCallback<ShopListItemModel>() {
+class ShopListItemsAdapter(private val listener: OnClickListener<ShopListItemModel>): ListAdapter<ShopListItemModel, ShopListItemsAdapter.ItemHolder>(object : DiffUtil.ItemCallback<ShopListItemModel>() {
     override fun areItemsTheSame(oldItem: ShopListItemModel, newItem: ShopListItemModel): Boolean = oldItem.id == newItem.id
     override fun areContentsTheSame(oldItem: ShopListItemModel, newItem: ShopListItemModel): Boolean = oldItem == newItem
 }) {
@@ -21,6 +22,10 @@ class ShopListItemsAdapter: ListAdapter<ShopListItemModel, ShopListItemsAdapter.
                 }
                 else
                     binding.tvName.paintFlags = binding.tvName.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+            }
+            itemView.setOnLongClickListener {
+                listener.onLongClick(item)
+                true
             }
             binding.tvName.text = item.name
         }

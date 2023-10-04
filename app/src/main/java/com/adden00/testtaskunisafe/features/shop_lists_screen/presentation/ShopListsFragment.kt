@@ -1,5 +1,6 @@
 package com.adden00.testtaskunisafe.features.shop_lists_screen.presentation
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -22,7 +23,9 @@ import com.adden00.testtaskunisafe.app.di.ui.DaggerShopListsComponent
 import com.adden00.testtaskunisafe.app.getAppComponent
 import com.adden00.testtaskunisafe.core.Constants
 import com.adden00.testtaskunisafe.core.ViewModelFactory
-import com.adden00.testtaskunisafe.databinding.DialogNewShopListBinding
+import com.adden00.testtaskunisafe.core.utills.OnClickListener
+import com.adden00.testtaskunisafe.databinding.DialogConfirmBinding
+import com.adden00.testtaskunisafe.databinding.DialogInputBinding
 import com.adden00.testtaskunisafe.databinding.FragmentShopListsBinding
 import com.adden00.testtaskunisafe.features.shop_lists_screen.presentation.models.ShopListModel
 import com.adden00.testtaskunisafe.features.shop_lists_screen.presentation.mvi.ShopListEffect
@@ -42,7 +45,7 @@ class ShopListsFragment : Fragment() {
     lateinit var viewModelFactory: ViewModelFactory
     private val viewModel: ShopListsViewModel by viewModels { viewModelFactory }
     private val adapter by lazy {
-        ShopListsAdapter(object : ShopListsAdapter.OnClickListener {
+        ShopListsAdapter(object : OnClickListener<ShopListModel> {
             override fun onClick(item: ShopListModel) {
                 val args = bundleOf(Constants.NAVIGATION_ITEM_KEY to item)
                 findNavController().navigate(
@@ -51,7 +54,7 @@ class ShopListsFragment : Fragment() {
                 )
             }
             override fun onLongClick(item: ShopListModel) {
-                removeList(item)
+                removeListDialog(item)
             }
         })
     }
@@ -125,6 +128,7 @@ class ShopListsFragment : Fragment() {
     }
 
     private fun render(state: ShopListState) {
+        binding.tvEmptyList.visibility = if(state.list.isEmpty()) View.VISIBLE else View.GONE
         binding.pbarListLoading.visibility = if (state.isLoading) View.VISIBLE else View.GONE
         binding.pbarIsUpdating.visibility = if (state.isUpdating) View.VISIBLE else View.GONE
         binding.swipeRefresh.isRefreshing = false
@@ -138,8 +142,8 @@ class ShopListsFragment : Fragment() {
             }
 
             is ShopListEffect.LogOut -> {
-                findNavController().navigate(R.id.action_shopListFragment_to_startFragment)
-                // TODO крашится после просмотра деталей списка
+                findNavController().popBackStack()
+                findNavController().navigate(R.id.main_nav)
             }
 
             is ShopListEffect.ShowMessage -> {
@@ -149,35 +153,46 @@ class ShopListsFragment : Fragment() {
         }
     }
 
-    private fun removeList(item: ShopListModel) {
-        AlertDialog
+    @SuppressLint("SetTextI18n")
+    private fun removeListDialog(item: ShopListModel) {
+        val dialogBinding = DialogConfirmBinding.inflate(LayoutInflater.from(requireContext()))
+        val dialog = AlertDialog
             .Builder(requireContext())
-            .setMessage("are you sure?")
-            .setTitle("remove ${item.name}")
-            .setPositiveButton("yes") { _, _ ->
-                viewModel.newEvent(ShopListEvent.RemoveShopList(item.id))
-            }
-            .setNegativeButton("no", null)
-            .show()
+            .setView(dialogBinding.root)
+            .create()
+        dialogBinding.btnYes.setOnClickListener {
+            viewModel.newEvent(ShopListEvent.RemoveShopList(item.id))
+            dialog.dismiss()
+        }
+        dialogBinding.btnNo.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialogBinding.tvConfirmMessage.text = getString(R.string.do_you_want_to_remove) + item.name + "?"
+        dialog.window?.decorView?.setBackgroundResource(R.drawable.bg_dialog)
+        dialog.show()
     }
 
-    private fun showCreateListDialog() {
-        val createListBinding =
-            DialogNewShopListBinding.inflate(LayoutInflater.from(requireContext()))
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setView(createListBinding.root)
-        val dialog = builder.create()
 
-        createListBinding.btnCreate.setOnClickListener {
-            viewModel.newEvent(ShopListEvent.CreateShopList(createListBinding.edName.text.toString()))
+    private fun showCreateListDialog() {
+        val dialogBinding =
+            DialogInputBinding.inflate(LayoutInflater.from(requireContext()))
+        val dialog =
+            AlertDialog.Builder(requireContext()).apply { setView(dialogBinding.root) }.create()
+
+        dialogBinding.edInput.hint = getString(R.string.name)
+        dialogBinding.tvTitle.text = getString(R.string.create_new_shopping_list)
+        dialogBinding.btnConfirm.text = getString(R.string.create)
+
+        dialogBinding.btnConfirm.setOnClickListener {
+            viewModel.newEvent(ShopListEvent.CreateShopList(dialogBinding.edInput.text.toString()))
             dialog.dismiss()
         }
 
-        createListBinding.edName.addTextChangedListener {
-            createListBinding.btnCreate.isEnabled = !it.isNullOrEmpty()
+        dialogBinding.edInput.addTextChangedListener {
+            dialogBinding.btnConfirm.isEnabled = !it.isNullOrEmpty()
         }
 
-        dialog.window?.decorView?.setBackgroundResource(R.drawable.dialog_bg)
+        dialog.window?.decorView?.setBackgroundResource(R.drawable.bg_dialog)
         dialog.show()
     }
 

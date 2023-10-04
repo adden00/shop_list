@@ -1,4 +1,4 @@
-package com.adden00.testtaskunisafe.features.auth_screen.domain.use_cases
+package com.adden00.testtaskunisafe.features.start_screen.domain
 
 import android.content.SharedPreferences
 import com.adden00.testtaskunisafe.core.Constants
