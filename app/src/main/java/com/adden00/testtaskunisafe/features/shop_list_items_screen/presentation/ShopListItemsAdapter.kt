@@ -16,18 +16,21 @@ class ShopListItemsAdapter(private val listener: OnClickListener<ShopListItemMod
 }) {
     inner class ItemHolder(private val binding: ShopListItemItemBinding): RecyclerView.ViewHolder(binding.root) {
         fun render(item: ShopListItemModel) {
-            binding.checkbox.setOnCheckedChangeListener { _, isChecked ->
-                if (isChecked) {
-                    binding.tvName.paintFlags = binding.tvName.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                }
-                else
-                    binding.tvName.paintFlags = binding.tvName.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+
+            binding.checkbox.isChecked = item.isCrossed
+            itemView.setOnClickListener{
+                listener.onClick(item)
             }
             itemView.setOnLongClickListener {
                 listener.onLongClick(item)
                 true
             }
             binding.tvName.text = item.name
+            if (item.isCrossed) {
+                binding.tvName.paintFlags = binding.tvName.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+            }
+            else
+                binding.tvName.paintFlags = binding.tvName.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
         }
 
     }

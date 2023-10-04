@@ -5,13 +5,13 @@ import com.adden00.testtaskunisafe.features.shop_list_items_screen.domain.ShopLi
 import com.adden00.testtaskunisafe.features.shop_list_items_screen.domain.models.ShopListItemModelDomain
 import javax.inject.Inject
 
-class RemoveItemUseCase  @Inject constructor(private val repository: ShopListItemsRepository) {
+class CrossItemUseCase  @Inject constructor(private val repository: ShopListItemsRepository) {
     suspend operator fun invoke(listId: Int, itemId: Int): List<ShopListItemModelDomain> {
-            val success = repository.removeItem(listId, itemId)
+            val success = repository.crossItem(itemId)
             if(success) {
                 return repository.getAllItems(listId)
             }
             else
-                throw FalseSuccessResponseException("remove result not success!")
+                throw FalseSuccessResponseException("cross result not success!")
         }
 }

@@ -3,5 +3,6 @@ package com.adden00.testtaskunisafe.features.shop_list_items_screen.domain.model
 data class ShopListItemModelDomain(
     val created: String,
     val name: String,
-    val id: Int
+    val id: Int,
+    val isCrossed: Boolean
 )

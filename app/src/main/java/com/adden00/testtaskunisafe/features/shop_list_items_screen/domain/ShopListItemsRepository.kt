@@ -5,5 +5,6 @@ import com.adden00.testtaskunisafe.features.shop_list_items_screen.domain.models
 interface ShopListItemsRepository {
     suspend fun getAllItems(listId: Int): List<ShopListItemModelDomain>
     suspend fun addNewItem(listId: Int, itemName: String): Boolean
-    suspend fun removeItem(itemId: Int): Boolean
+    suspend fun crossItem(itemId: Int): Boolean
+    suspend fun removeItem(listId: Int, itemId: Int): Boolean
 }

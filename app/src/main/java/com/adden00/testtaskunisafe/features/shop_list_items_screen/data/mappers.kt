@@ -7,5 +7,6 @@ fun ShopListItemDto.toDomain(): ShopListItemModelDomain =
     ShopListItemModelDomain(
         created = this.created,
         name = this.name,
-        id = this.id
+        id = this.id,
+        isCrossed = this.isCrossed
     )

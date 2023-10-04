@@ -48,7 +48,9 @@ class ShopListItemsFragment : Fragment() {
     private val viewModel: ShopListItemsViewModel by viewModels { viewModelFactory }
     private val adapter by lazy {
         ShopListItemsAdapter(object : OnClickListener<ShopListItemModel> {
-            override fun onClick(item: ShopListItemModel) = Unit
+            override fun onClick(item: ShopListItemModel) {
+                viewModel.newEvent(ShopListItemsEvent.CrossItem(currentShopList.id, item.id))
+            }
             override fun onLongClick(item: ShopListItemModel) {
                 removeListDialog(item)
             }

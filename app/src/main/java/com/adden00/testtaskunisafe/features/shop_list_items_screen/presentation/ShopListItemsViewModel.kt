@@ -3,6 +3,7 @@ package com.adden00.testtaskunisafe.features.shop_list_items_screen.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.adden00.testtaskunisafe.features.shop_list_items_screen.domain.use_cases.AddNewItemUseCase
+import com.adden00.testtaskunisafe.features.shop_list_items_screen.domain.use_cases.CrossItemUseCase
 import com.adden00.testtaskunisafe.features.shop_list_items_screen.domain.use_cases.LoadAllItemsUseCase
 import com.adden00.testtaskunisafe.features.shop_list_items_screen.domain.use_cases.RemoveItemUseCase
 import com.adden00.testtaskunisafe.features.shop_list_items_screen.presentation.mvi.ShopListItemsEffect
@@ -18,7 +19,8 @@ import javax.inject.Inject
 class ShopListItemsViewModel @Inject constructor(
     private val addNewItemUseCase: AddNewItemUseCase,
     private val loadAllItemsUseCase: LoadAllItemsUseCase,
-    private val removeItemUseCase: RemoveItemUseCase
+    private val removeItemUseCase: RemoveItemUseCase,
+    private val crossItemUseCase: CrossItemUseCase
 ): ViewModel() {
     private val _shopListItemsState = MutableStateFlow(ShopListItemsState())
     val shopListItemsState: StateFlow<ShopListItemsState> get() = _shopListItemsState.asStateFlow()
@@ -78,6 +80,23 @@ class ShopListItemsViewModel @Inject constructor(
                     catch (e: Exception) {
                         _shopListItemsEffect.update { ShopListItemsEffect.ShowInternetError }
 
+                    }
+                    finally {
+                        _shopListItemsState.update { it.copy(isUpdating = false) }
+                        _shopListItemsEffect.update { ShopListItemsEffect.Waiting }
+                    }
+                }
+            }
+
+            is ShopListItemsEvent.CrossItem -> {
+                _shopListItemsState.update { it.copy(isUpdating = true) }
+                viewModelScope.launch {
+                    try {
+                        val newList = crossItemUseCase(event.listId, event.itemId).map{it.toPresentation()}
+                        _shopListItemsState.update { it.copy(list = newList) }
+                    }
+                    catch (e: Exception) {
+                        _shopListItemsEffect.update { ShopListItemsEffect.ShowInternetError }
                     }
                     finally {
                         _shopListItemsState.update { it.copy(isUpdating = false) }

@@ -14,5 +14,8 @@ data class ShopListItemDto(
     val name: String,
 
     @SerialName("id")
-    val id: Int
+    val id: Int,
+
+    @SerialName ("is_crossed")
+    val isCrossed: Boolean
 )
