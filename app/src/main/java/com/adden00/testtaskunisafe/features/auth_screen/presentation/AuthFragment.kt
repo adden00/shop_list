@@ -1,4 +1,4 @@
-package com.adden00.testtaskunisafe.features.start_screen.presentation
+package com.adden00.testtaskunisafe.features.auth_screen.presentation
 
 import android.app.AlertDialog
 import android.content.Context
@@ -17,22 +17,22 @@ import com.adden00.testtaskunisafe.app.di.ui.DaggerAuthComponent
 import com.adden00.testtaskunisafe.app.getAppComponent
 import com.adden00.testtaskunisafe.core.ViewModelFactory
 import com.adden00.testtaskunisafe.databinding.DialogLoginBinding
-import com.adden00.testtaskunisafe.databinding.FragmentStartBinding
-import com.adden00.testtaskunisafe.features.start_screen.presentation.mvi.AuthScreenEffect
-import com.adden00.testtaskunisafe.features.start_screen.presentation.mvi.AuthScreenState
+import com.adden00.testtaskunisafe.databinding.FragmentAuthBinding
+import com.adden00.testtaskunisafe.features.auth_screen.presentation.mvi.AuthScreenEffect
+import com.adden00.testtaskunisafe.features.auth_screen.presentation.mvi.AuthScreenState
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
-class StartFragment : Fragment() {
+class AuthFragment : Fragment() {
 
-    private var _binding: FragmentStartBinding? = null
-    private val binding: FragmentStartBinding get() = _binding!!
+    private var _binding: FragmentAuthBinding? = null
+    private val binding: FragmentAuthBinding get() = _binding!!
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
-    private val viewModel: StartViewModel by viewModels { viewModelFactory }
+    private val viewModel: AuthViewModel by viewModels { viewModelFactory }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -44,7 +44,7 @@ class StartFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentStartBinding.inflate(inflater, container, false)
+        _binding = FragmentAuthBinding.inflate(inflater, container, false)
         return binding.root
     }
 

@@ -1,8 +1,8 @@
-package com.adden00.testtaskunisafe.features.start_screen.domain.use_cases
+package com.adden00.testtaskunisafe.features.auth_screen.domain.use_cases
 
 import android.content.SharedPreferences
 import com.adden00.testtaskunisafe.core.Constants
-import com.adden00.testtaskunisafe.features.start_screen.domain.AuthRepository
+import com.adden00.testtaskunisafe.features.auth_screen.domain.AuthRepository
 import javax.inject.Inject
 
 class CreateTokenUseCase @Inject constructor(

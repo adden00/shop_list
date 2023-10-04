@@ -5,4 +5,5 @@ sealed class ShopListEvent {
     object GetAllShopLists: ShopListEvent()
     object LogOut: ShopListEvent()
     class CopyShopListId(val copy: (String)->Unit): ShopListEvent()
+    class RemoveShopList(val listId: Int): ShopListEvent()
 }

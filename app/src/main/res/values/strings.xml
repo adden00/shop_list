@@ -14,4 +14,8 @@
     <string name="wring_shopping_list_id">Wring shopping list id!</string>
     <string name="copy_account_id">copy account id</string>
     <string name="list_name">list_name</string>
+    <string name="add_new_item">add new item</string>
+    <string name="add">add</string>
+    <string name="count">count</string>
+    <string name="shoplistname">ShopListName</string>
 </resources>

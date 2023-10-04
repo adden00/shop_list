@@ -1,4 +1,4 @@
-package com.adden00.testtaskunisafe.features.start_screen.data
+package com.adden00.testtaskunisafe.features.auth_screen.data
 
 import retrofit2.http.GET
 import retrofit2.http.POST

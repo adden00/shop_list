@@ -4,5 +4,6 @@ import com.adden00.testtaskunisafe.features.shop_lists_screen.presentation.model
 
 data class ShopListState(
     val list: List<ShopListModel> = listOf(),
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
+    val isUpdating: Boolean = false
 )

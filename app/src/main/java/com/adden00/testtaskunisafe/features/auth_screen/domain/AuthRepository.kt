@@ -1,4 +1,4 @@
-package com.adden00.testtaskunisafe.features.start_screen.domain
+package com.adden00.testtaskunisafe.features.auth_screen.domain
 
 interface AuthRepository {
     suspend fun createKey(): String

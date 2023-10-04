@@ -1,8 +1,9 @@
 package com.adden00.testtaskunisafe.app.di
 
 import com.adden00.testtaskunisafe.core.Constants
+import com.adden00.testtaskunisafe.features.auth_screen.data.AuthApiClient
+import com.adden00.testtaskunisafe.features.shop_list_items_screen.data.ShopListItemApiClient
 import com.adden00.testtaskunisafe.features.shop_lists_screen.data.ShopListApiClient
-import com.adden00.testtaskunisafe.features.start_screen.data.AuthApiClient
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -32,6 +33,21 @@ class NetworkModule {
             )
             .build()
             .create(ShopListApiClient::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideShopListItemsApiClient(client: OkHttpClient): ShopListItemApiClient {
+        val json = Json { ignoreUnknownKeys = true }
+        return Retrofit.Builder()
+            .client(client)
+            .baseUrl(Constants.BASE_URL)
+            .addConverterFactory(
+                @OptIn(ExperimentalSerializationApi::class)
+                json.asConverterFactory("application/json".toMediaType())
+            )
+            .build()
+            .create(ShopListItemApiClient::class.java)
     }
 
 

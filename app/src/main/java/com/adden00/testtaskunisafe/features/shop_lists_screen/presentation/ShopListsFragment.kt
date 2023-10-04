@@ -24,6 +24,7 @@ import com.adden00.testtaskunisafe.core.Constants
 import com.adden00.testtaskunisafe.core.ViewModelFactory
 import com.adden00.testtaskunisafe.databinding.DialogNewShopListBinding
 import com.adden00.testtaskunisafe.databinding.FragmentShopListsBinding
+import com.adden00.testtaskunisafe.features.shop_lists_screen.presentation.models.ShopListModel
 import com.adden00.testtaskunisafe.features.shop_lists_screen.presentation.mvi.ShopListEffect
 import com.adden00.testtaskunisafe.features.shop_lists_screen.presentation.mvi.ShopListEvent
 import com.adden00.testtaskunisafe.features.shop_lists_screen.presentation.mvi.ShopListState
@@ -41,11 +42,20 @@ class ShopListsFragment : Fragment() {
     lateinit var viewModelFactory: ViewModelFactory
     private val viewModel: ShopListsViewModel by viewModels { viewModelFactory }
     private val adapter by lazy {
-        ShopListsAdapter { item ->
-            val args = bundleOf(Constants.NAVIGATION_ITEM_KEY to item)
-            findNavController().navigate(R.id.action_shopListFragment_to_shopListItemsFragment, args)
-        }
+        ShopListsAdapter(object : ShopListsAdapter.OnClickListener {
+            override fun onClick(item: ShopListModel) {
+                val args = bundleOf(Constants.NAVIGATION_ITEM_KEY to item)
+                findNavController().navigate(
+                    R.id.action_shopListFragment_to_shopListItemsFragment,
+                    args
+                )
+            }
+            override fun onLongClick(item: ShopListModel) {
+                removeList(item)
+            }
+        })
     }
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -72,7 +82,6 @@ class ShopListsFragment : Fragment() {
     }
 
     private fun setUi() {
-
         binding.rcShopLists.layoutManager = LinearLayoutManager(requireContext())
         binding.rcShopLists.adapter = adapter
         binding.fabNewList.setOnClickListener {
@@ -87,19 +96,19 @@ class ShopListsFragment : Fragment() {
                     viewModel.newEvent(ShopListEvent.LogOut)
                 }
                 R.id.copyToken -> {
-                    viewModel.newEvent(ShopListEvent.CopyShopListId {content ->
+                    viewModel.newEvent(ShopListEvent.CopyShopListId { content ->
                         val clipboard =
-                            ContextCompat.getSystemService(requireContext(), ClipboardManager::class.java)
+                            ContextCompat.getSystemService(
+                                requireContext(),
+                                ClipboardManager::class.java
+                            )
                         val clip = ClipData.newPlainText("Message", content)
                         clipboard?.setPrimaryClip(clip)
                     })
                 }
-
             }
             true
-
         }
-
     }
 
 
@@ -117,6 +126,7 @@ class ShopListsFragment : Fragment() {
 
     private fun render(state: ShopListState) {
         binding.pbarListLoading.visibility = if (state.isLoading) View.VISIBLE else View.GONE
+        binding.pbarIsUpdating.visibility = if (state.isUpdating) View.VISIBLE else View.GONE
         binding.swipeRefresh.isRefreshing = false
         adapter.submitList(state.list)
     }
@@ -124,24 +134,31 @@ class ShopListsFragment : Fragment() {
     private fun handleEffect(effect: ShopListEffect) {
         when (effect) {
             is ShopListEffect.InternetError -> {
-                Snackbar.make(
-                    binding.root,
-                    getString(R.string.internet_error),
-                    Snackbar.LENGTH_SHORT
-                ).show()
+                showSnackBar(getString(R.string.internet_error))
             }
 
             is ShopListEffect.LogOut -> {
                 findNavController().navigate(R.id.action_shopListFragment_to_startFragment)
+                // TODO крашится после просмотра деталей списка
             }
 
             is ShopListEffect.ShowMessage -> {
-                Snackbar.make(binding.root, effect.message, Snackbar.LENGTH_SHORT).show()
-
+                showSnackBar(effect.message)
             }
-
             is ShopListEffect.Waiting -> Unit
         }
+    }
+
+    private fun removeList(item: ShopListModel) {
+        AlertDialog
+            .Builder(requireContext())
+            .setMessage("are you sure?")
+            .setTitle("remove ${item.name}")
+            .setPositiveButton("yes") { _, _ ->
+                viewModel.newEvent(ShopListEvent.RemoveShopList(item.id))
+            }
+            .setNegativeButton("no", null)
+            .show()
     }
 
     private fun showCreateListDialog() {
@@ -162,6 +179,14 @@ class ShopListsFragment : Fragment() {
 
         dialog.window?.decorView?.setBackgroundResource(R.drawable.dialog_bg)
         dialog.show()
+    }
+
+    private fun showSnackBar(message: String) {
+        Snackbar.make(
+            binding.root,
+            message,
+            Snackbar.LENGTH_SHORT
+        ).show()
     }
 
 }

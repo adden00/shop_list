@@ -6,8 +6,8 @@ import com.adden00.testtaskunisafe.app.di.AppComponent
 import com.adden00.testtaskunisafe.app.di.ScreenScope
 import com.adden00.testtaskunisafe.app.di.ViewModelKey
 import com.adden00.testtaskunisafe.core.ViewModelFactory
-import com.adden00.testtaskunisafe.features.start_screen.presentation.StartFragment
-import com.adden00.testtaskunisafe.features.start_screen.presentation.StartViewModel
+import com.adden00.testtaskunisafe.features.auth_screen.presentation.AuthFragment
+import com.adden00.testtaskunisafe.features.auth_screen.presentation.AuthViewModel
 import dagger.Binds
 import dagger.Component
 import dagger.Module
@@ -20,7 +20,7 @@ import dagger.multibindings.IntoMap
 )
 interface AuthComponent {
 
-    fun inject(fragment: StartFragment)
+    fun inject(fragment: AuthFragment)
 
     @Component.Factory
     interface Factory {
@@ -35,8 +35,8 @@ interface AuthModule {
     fun bindViewModelFactory(impl: ViewModelFactory): ViewModelProvider.Factory
 
     @IntoMap
-    @ViewModelKey(StartViewModel::class)
+    @ViewModelKey(AuthViewModel::class)
     @Binds
-    fun bindMessengerViewModel(impl: StartViewModel): ViewModel
+    fun bindMessengerViewModel(impl: AuthViewModel): ViewModel
 
 }

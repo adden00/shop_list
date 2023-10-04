@@ -3,11 +3,11 @@ package com.adden00.testtaskunisafe.features.shop_lists_screen.presentation
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.adden00.testtaskunisafe.features.shop_lists_screen.domain.repository.ShopListsRepository
 import com.adden00.testtaskunisafe.features.shop_lists_screen.domain.use_cases.CopyAccountIdUseCase
 import com.adden00.testtaskunisafe.features.shop_lists_screen.domain.use_cases.CreateShopListUseCase
 import com.adden00.testtaskunisafe.features.shop_lists_screen.domain.use_cases.GetAllShopListsUseCase
 import com.adden00.testtaskunisafe.features.shop_lists_screen.domain.use_cases.LogOutUseCase
+import com.adden00.testtaskunisafe.features.shop_lists_screen.domain.use_cases.RemoveShopListUseCase
 import com.adden00.testtaskunisafe.features.shop_lists_screen.presentation.mvi.ShopListEffect
 import com.adden00.testtaskunisafe.features.shop_lists_screen.presentation.mvi.ShopListEvent
 import com.adden00.testtaskunisafe.features.shop_lists_screen.presentation.mvi.ShopListState
@@ -24,7 +24,7 @@ class ShopListsViewModel @Inject constructor(
     private val createShopListUseCase: CreateShopListUseCase,
     private val logOutUseCase: LogOutUseCase,
     private val copyAccountIdUseCase: CopyAccountIdUseCase,
-    private val repository: ShopListsRepository
+    private val removeShopListUseCase: RemoveShopListUseCase,
 ) : ViewModel() {
 
     private val _shopListState = MutableStateFlow(ShopListState())
@@ -40,19 +40,18 @@ class ShopListsViewModel @Inject constructor(
     fun newEvent(event: ShopListEvent) {
         when (event) {
             is ShopListEvent.CreateShopList -> {
+                _shopListState.update { it.copy(isUpdating = true) }
                 viewModelScope.launch {
                     try {
                         val newList = createShopListUseCase(event.name)
                         _shopListState.update { it.copy(list = newList.map { item -> item.toPresentation() }) }
-
                     } catch (e: Exception) {
                         Log.d("my_log", e.toString())
                         _shopListEffect.update { ShopListEffect.InternetError }
-
                     }
                     finally {
                         _shopListEffect.update { ShopListEffect.Waiting }
-
+                        _shopListState.update { it.copy(isUpdating = false) }
                     }
                 }
             }
@@ -64,7 +63,7 @@ class ShopListsViewModel @Inject constructor(
                         val result = getAllShopListsUseCase()
                         _shopListState.update { it.copy(list = result.map { item -> item.toPresentation() }) }
 
-                    } catch (e: Throwable) {
+                    } catch (e: Exception) {
                         Log.d("my_log", e.toString())
                         _shopListEffect.update { ShopListEffect.InternetError }
                     } finally {
@@ -84,6 +83,23 @@ class ShopListsViewModel @Inject constructor(
 
             is ShopListEvent.CopyShopListId -> {
                 copyAccountIdUseCase(event.copy)
+            }
+
+            is ShopListEvent.RemoveShopList -> {
+                _shopListState.update { it.copy(isUpdating = true) }
+                viewModelScope.launch {
+                    try {
+                        val newList = removeShopListUseCase(event.listId)
+                        _shopListState.update { it.copy(list = newList.map { item -> item.toPresentation() }) }
+                    } catch (e: Exception) {
+                        Log.d("my_log", e.toString())
+                        _shopListEffect.update { ShopListEffect.InternetError }
+                    }
+                    finally {
+                        _shopListEffect.update { ShopListEffect.Waiting }
+                        _shopListState.update { it.copy(isUpdating = false) }
+                    }
+                }
             }
         }
 

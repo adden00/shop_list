@@ -1,6 +1,6 @@
-package com.adden00.testtaskunisafe.features.start_screen.data
+package com.adden00.testtaskunisafe.features.auth_screen.data
 
-import com.adden00.testtaskunisafe.features.start_screen.domain.AuthRepository
+import com.adden00.testtaskunisafe.features.auth_screen.domain.AuthRepository
 
 class AuthRepositoryImpl(private val api: AuthApiClient): AuthRepository {
 

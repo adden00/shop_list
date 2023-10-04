@@ -1,4 +1,4 @@
-package com.adden00.testtaskunisafe.features.start_screen.presentation.mvi
+package com.adden00.testtaskunisafe.features.auth_screen.presentation.mvi
 
 sealed class AuthScreenEffect {
     object Waiting: AuthScreenEffect()

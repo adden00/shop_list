@@ -1,13 +1,13 @@
-package com.adden00.testtaskunisafe.features.start_screen.presentation
+package com.adden00.testtaskunisafe.features.auth_screen.presentation
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.adden00.testtaskunisafe.features.start_screen.domain.use_cases.CreateTokenUseCase
-import com.adden00.testtaskunisafe.features.start_screen.domain.use_cases.GetTokenUseCase
-import com.adden00.testtaskunisafe.features.start_screen.domain.use_cases.LogInUseCase
-import com.adden00.testtaskunisafe.features.start_screen.presentation.mvi.AuthScreenEffect
-import com.adden00.testtaskunisafe.features.start_screen.presentation.mvi.AuthScreenState
+import com.adden00.testtaskunisafe.features.auth_screen.domain.use_cases.CreateTokenUseCase
+import com.adden00.testtaskunisafe.features.auth_screen.domain.use_cases.GetTokenUseCase
+import com.adden00.testtaskunisafe.features.auth_screen.domain.use_cases.LogInUseCase
+import com.adden00.testtaskunisafe.features.auth_screen.presentation.mvi.AuthScreenEffect
+import com.adden00.testtaskunisafe.features.auth_screen.presentation.mvi.AuthScreenState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import javax.inject.Inject
 
-class StartViewModel @Inject constructor(
+class AuthViewModel @Inject constructor(
     private val createTokenUseCase: CreateTokenUseCase,
     private val logInUseCase: LogInUseCase,
     private val getTokenUseCase: GetTokenUseCase
