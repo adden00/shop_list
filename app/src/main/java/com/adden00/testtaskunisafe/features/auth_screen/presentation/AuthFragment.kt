@@ -17,12 +17,14 @@ import com.adden00.testtaskunisafe.app.di.ui.DaggerAuthComponent
 import com.adden00.testtaskunisafe.app.getAppComponent
 import com.adden00.testtaskunisafe.core.ViewModelFactory
 import com.adden00.testtaskunisafe.databinding.DialogInputBinding
+import com.adden00.testtaskunisafe.databinding.DialogRegisterBinding
 import com.adden00.testtaskunisafe.databinding.FragmentAuthBinding
 import com.adden00.testtaskunisafe.features.auth_screen.presentation.mvi.AuthScreenEffect
 import com.adden00.testtaskunisafe.features.auth_screen.presentation.mvi.AuthScreenState
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import java.util.regex.Pattern
 import javax.inject.Inject
 
 class AuthFragment : Fragment() {
@@ -74,14 +76,14 @@ class AuthFragment : Fragment() {
         binding.pbar.visibility = if (state.isLoading) View.VISIBLE else View.GONE
     }
 
-        private fun handleEffect(effect: AuthScreenEffect) {
-            when(effect) {
-                AuthScreenEffect.Waiting -> Unit
-                AuthScreenEffect.InternetError -> showSnackBar(getString(R.string.internet_error))
-                AuthScreenEffect.NavigateToShopLists -> navigateToShopLists()
-                AuthScreenEffect.WrongTokenError -> showSnackBar(getString(R.string.wring_shopping_list_id))
-            }
+    private fun handleEffect(effect: AuthScreenEffect) {
+        when (effect) {
+            AuthScreenEffect.Waiting -> Unit
+            AuthScreenEffect.InternetError -> showSnackBar(getString(R.string.internet_error))
+            AuthScreenEffect.NavigateToShopLists -> navigateToShopLists()
+            AuthScreenEffect.WrongTokenError -> showSnackBar(getString(R.string.wring_shopping_list_id))
         }
+    }
 
     private fun showSnackBar(message: String) {
         Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
@@ -92,11 +94,11 @@ class AuthFragment : Fragment() {
     }
 
     private fun setUi() {
-        binding.bntImport.setOnClickListener{
+        binding.bntImport.setOnClickListener {
             openLoginDialog()
         }
         binding.btnCreateNew.setOnClickListener {
-            viewModel.createNewAccount()
+            openRegisterDialog()
         }
     }
 
@@ -122,4 +124,38 @@ class AuthFragment : Fragment() {
         dialog.show()
     }
 
+    private fun openRegisterDialog() {
+        val dialogBinding = DialogRegisterBinding.inflate(LayoutInflater.from(requireContext()))
+        val dialog =
+            AlertDialog.Builder(requireContext()).apply { setView(dialogBinding.root) }.create()
+
+        with(dialogBinding) {
+            edName.addTextChangedListener {
+                btnCreate.isEnabled = !it.isNullOrEmpty()
+            }
+
+            btnCreate.setOnClickListener {
+                if (edPhone.text?.length == 10 && !checkEmail(edPhone.text.toString())) {
+                    viewModel.registerNewAccount(
+                        edName.text.toString(),
+                        edMail.text.toString(),
+                        edPhone.text.toString()
+                    )
+                    dialog.dismiss()
+                } else if (!checkEmail(edMail.text.toString()))
+                    Snackbar.make(dialogBinding.root, "Write correct email!", Snackbar.LENGTH_SHORT).show()
+                else if (edPhone.text?.length != 10)
+                    Snackbar.make(dialogBinding.root, "Write correct phone", Snackbar.LENGTH_SHORT).show()
+            }
+        }
+        dialog.window?.decorView?.setBackgroundResource(R.drawable.bg_dialog)
+        dialog.show()
+    }
+
+    private fun checkEmail(email: String): Boolean {
+        val pattern = Pattern.compile(
+            "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}\\@[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}(\\.[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25})+"
+        )
+        return pattern.matcher(email).matches()
+    }
 }

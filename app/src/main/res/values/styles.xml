@@ -12,6 +12,11 @@
         <item name="android:textSize">22sp</item>
     </style>
 
+    <style name="selectable_text" parent="text">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/dark_blue</item>
+    </style>
+
     <style name="button_style" parent="text" >
         <item name="textAllCaps">false</item>
         <item name="android:paddingStart">8dp</item>

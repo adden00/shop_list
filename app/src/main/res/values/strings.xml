@@ -5,7 +5,7 @@
     <string name="create">Create</string>
     <string name="shopping_list">Shopping list</string>
     <string name="welcome_to_shopping_lists_app">Welcome to shopping lists app!</string>
-    <string name="create_new_account">create new account</string>
+    <string name="create_new_account">Create new account</string>
     <string name="import_account_by_id">Import account by id</string>
     <string name="id">id</string>
     <string name="log_in">Log in</string>
@@ -31,4 +31,8 @@
     <string name="try_again">Try again</string>
     <string name="no_lists_please_create_th_first">No shopping lists. Please create the first!</string>
     <string name="shopping_list_is_empty">Shopping list is empty!</string>
+    <string name="email">Email</string>
+    <string name="create_account">Create account</string>
+    <string name="phone">Phone</string>
+    <string name="your_account_id">Your account id:</string>
 </resources>

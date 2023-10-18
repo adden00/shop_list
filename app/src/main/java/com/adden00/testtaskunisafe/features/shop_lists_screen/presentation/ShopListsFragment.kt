@@ -93,25 +93,29 @@ class ShopListsFragment : Fragment() {
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.newEvent(ShopListEvent.GetAllShopLists)
         }
+        binding.tvAccountId.setOnClickListener {
+            viewModel.newEvent(ShopListEvent.CopyShopListId { content ->
+                val clipboard =
+                    ContextCompat.getSystemService(
+                        requireContext(),
+                        ClipboardManager::class.java
+                    )
+                val clip = ClipData.newPlainText("Message", content)
+                clipboard?.setPrimaryClip(clip)
+            })
+        }
         binding.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.logOut -> {
                     viewModel.newEvent(ShopListEvent.LogOut)
                 }
                 R.id.copyToken -> {
-                    viewModel.newEvent(ShopListEvent.CopyShopListId { content ->
-                        val clipboard =
-                            ContextCompat.getSystemService(
-                                requireContext(),
-                                ClipboardManager::class.java
-                            )
-                        val clip = ClipData.newPlainText("Message", content)
-                        clipboard?.setPrimaryClip(clip)
-                    })
+
                 }
             }
             true
         }
+
     }
 
 
@@ -133,6 +137,7 @@ class ShopListsFragment : Fragment() {
         binding.pbarIsUpdating.visibility = if (state.isUpdating) View.VISIBLE else View.GONE
         binding.swipeRefresh.isRefreshing = false
         adapter.submitList(state.list)
+        binding.tvAccountId.text = state.id ?: ""
     }
 
     private fun handleEffect(effect: ShopListEffect) {
@@ -209,5 +214,4 @@ class ShopListsFragment : Fragment() {
             Snackbar.LENGTH_SHORT
         ).show()
     }
-
 }

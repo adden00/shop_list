@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.adden00.testtaskunisafe.core.TokenIsNullException
 import com.adden00.testtaskunisafe.features.shop_lists_screen.domain.use_cases.CopyAccountIdUseCase
 import com.adden00.testtaskunisafe.features.shop_lists_screen.domain.use_cases.CreateShopListUseCase
+import com.adden00.testtaskunisafe.features.shop_lists_screen.domain.use_cases.GetAccountIdUseCase
 import com.adden00.testtaskunisafe.features.shop_lists_screen.domain.use_cases.GetAllShopListsUseCase
 import com.adden00.testtaskunisafe.features.shop_lists_screen.domain.use_cases.LogOutUseCase
 import com.adden00.testtaskunisafe.features.shop_lists_screen.domain.use_cases.RemoveShopListUseCase
@@ -25,6 +26,7 @@ class ShopListsViewModel @Inject constructor(
     private val logOutUseCase: LogOutUseCase,
     private val copyAccountIdUseCase: CopyAccountIdUseCase,
     private val removeShopListUseCase: RemoveShopListUseCase,
+    private val getAccountIdUseCase: GetAccountIdUseCase,
 ) : ViewModel() {
 
     private val _shopListState = MutableStateFlow(ShopListState())
@@ -35,6 +37,7 @@ class ShopListsViewModel @Inject constructor(
 
     init {
         newEvent(ShopListEvent.GetAllShopLists)
+        newEvent(ShopListEvent.GetAccountId)
     }
 
     fun newEvent(event: ShopListEvent) {
@@ -98,6 +101,11 @@ class ShopListsViewModel @Inject constructor(
                         _shopListState.update { it.copy(isUpdating = false) }
                     }
                 }
+            }
+
+            ShopListEvent.GetAccountId -> {
+                val token = getAccountIdUseCase()
+                _shopListState.update { it.copy(id = token) }
             }
         }
 
