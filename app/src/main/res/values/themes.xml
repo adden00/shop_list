@@ -1,8 +1,8 @@
 <resources>
-    <style name="Base.Theme.TestTaskUnisafe" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.ShoppingList" parent="Theme.Material3.DayNight.NoActionBar">
     </style>
 
-    <style name="Theme.TestTaskUnisafe" parent="Base.Theme.TestTaskUnisafe">
+    <style name="Theme.ShoppingList" parent="Base.Theme.ShoppingList">
         <item name="colorPrimary">@color/primary</item>
         <item name="android:statusBarColor">@color/white</item>
         <item name="android:windowLightStatusBar">true</item>

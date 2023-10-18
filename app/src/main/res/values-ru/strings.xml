@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">Список покупок</string>
+    <string name="create_new_shopping_list">Создать новый список покупок</string>
+    <string name="name">Имя</string>
+    <string name="create">Создать</string>
+    <string name="shopping_list">Список покупок</string>
+    <string name="welcome_to_shopping_lists_app">Добро пожаловать в приложение для создания списков покупок!</string>
+    <string name="create_new_account">Создать новый аккаунт</string>
+    <string name="import_account_by_id">Войти в существующий аккаунт по id</string>
+    <string name="log_in">Войти</string>
+    <string name="log_out">Выйти</string>
+    <string name="internet_error">Ошибка подключения</string>
+    <string name="wring_shopping_list_id">Неверный id!</string>
+    <string name="copy_account_id">Скопировать id</string>
+    <string name="list_name">Название списка</string>
+    <string name="add_new_item">Добавить новую позицию</string>
+    <string name="add">Добавить</string>
+    <string name="count">Количество</string>
+    <string name="shoplistname">Название списка</string>
+    <string name="title">Название</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="confirm_text">Подтвердить</string>
+    <string name="itemname">Название позиции</string>
+    <string name="do_you_want_to_remove">Вы уверены что хотите удалить</string>
+    <string name="my_shopping_lists">Мои списки покупок</string>
+    <string name="no_internet_please_try_again">Отсутствует подключение к интернету. Повторите попытку!</string>
+    <string name="try_again">Повторить</string>
+    <string name="no_lists_please_create_th_first">Нет доступных списков. Создайте новый!</string>
+    <string name="shopping_list_is_empty">Список покупок пуст!</string>
+    <string name="create_account">Создать аккаунт</string>
+    <string name="phone">Телефон</string>
+    <string name="your_account_id">Ваш id аккаунта:</string>
+</resources>

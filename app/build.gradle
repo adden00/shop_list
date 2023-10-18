@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace 'com.adden00.testtaskunisafe'
+    namespace 'com.adden00.shopping_list'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.adden00.testtaskunisafe"
+        applicationId "com.adden00.shopping_list"
         minSdk 24
         targetSdk 33
         versionCode 1

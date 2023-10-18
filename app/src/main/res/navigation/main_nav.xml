@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/shopListFragment"
-        android:name="com.adden00.testtaskunisafe.features.shop_lists_screen.presentation.ShopListsFragment"
+        android:name="com.adden00.shopping_list.features.shop_lists_screen.presentation.ShopListsFragment"
         android:label="fragment_shop_list"
         tools:layout="@layout/fragment_shop_lists">
         <action
@@ -21,12 +21,12 @@
     </fragment>
     <fragment
         android:id="@+id/shopListItemsFragment"
-        android:name="com.adden00.testtaskunisafe.features.shop_list_items_screen.presentation.ShopListItemsFragment"
+        android:name="com.adden00.shopping_list.features.shop_list_items_screen.presentation.ShopListItemsFragment"
         android:label="fragment_shop_list_items"
         tools:layout="@layout/fragment_shop_list_items" />
     <fragment
         android:id="@+id/authFragment"
-        android:name="com.adden00.testtaskunisafe.features.auth_screen.presentation.AuthFragment"
+        android:name="com.adden00.shopping_list.features.auth_screen.presentation.AuthFragment"
         android:label="fragment_auth"
         tools:layout="@layout/fragment_auth">
         <action
@@ -37,7 +37,7 @@
     </fragment>
     <fragment
         android:id="@+id/startFragment"
-        android:name="com.adden00.testtaskunisafe.features.start_screen.presentation.StartFragment"
+        android:name="com.adden00.shopping_list.features.start_screen.presentation.StartFragment"
         android:label="fragment_start"
         tools:layout="@layout/fragment_start">
         <action

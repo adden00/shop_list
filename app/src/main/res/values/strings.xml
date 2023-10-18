@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">test task unisafe</string>
+    <string name="app_name">Shopping list</string>
     <string name="create_new_shopping_list">create new shopping list</string>
     <string name="name">Name</string>
     <string name="create">Create</string>
@@ -7,7 +7,7 @@
     <string name="welcome_to_shopping_lists_app">Welcome to shopping lists app!</string>
     <string name="create_new_account">Create new account</string>
     <string name="import_account_by_id">Import account by id</string>
-    <string name="id">id</string>
+    <string name="id" translatable="false">id</string>
     <string name="log_in">Log in</string>
     <string name="log_out">log out</string>
     <string name="internet_error">Internet error</string>
@@ -16,11 +16,11 @@
     <string name="list_name">list_name</string>
     <string name="add_new_item">Add new item</string>
     <string name="add">Add</string>
-    <string name="count">count</string>
+    <string name="count">Count</string>
     <string name="shoplistname">ShopListName</string>
     <string name="title">title</string>
-    <string name="hint">hint</string>
-    <string name="button_text">button text</string>
+    <string name="hint" translatable="false">hint</string>
+    <string name="button_text" translatable="false">button text</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="confirm_text">Confirm text</string>
@@ -31,7 +31,7 @@
     <string name="try_again">Try again</string>
     <string name="no_lists_please_create_th_first">No shopping lists. Please create the first!</string>
     <string name="shopping_list_is_empty">Shopping list is empty!</string>
-    <string name="email">Email</string>
+    <string name="email" translatable="false">Email</string>
     <string name="create_account">Create account</string>
     <string name="phone">Phone</string>
     <string name="your_account_id">Your account id:</string>
