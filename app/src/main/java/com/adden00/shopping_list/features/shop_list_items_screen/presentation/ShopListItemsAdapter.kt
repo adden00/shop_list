@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.adden00.shopping_list.R
 import com.adden00.shopping_list.core.utills.OnClickListener
 import com.adden00.shopping_list.databinding.ShopListItemItemBinding
 import com.adden00.shopping_list.features.shop_list_items_screen.presentation.models.ShopListItemModel
@@ -31,11 +32,13 @@ class ShopListItemsAdapter(private val listener: OnClickListener<ShopListItemMod
             binding.tvName.text = item.name
             if (item.isCrossed) {
                 binding.tvName.paintFlags = binding.tvName.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                binding.card.setCardBackgroundColor(binding.root.context.getColor(R.color.light_pink))
+            } else {
+                binding.tvName.paintFlags =
+                    binding.tvName.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+                binding.card.setCardBackgroundColor(binding.root.context.getColor(R.color.light_green))
             }
-            else
-                binding.tvName.paintFlags = binding.tvName.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder =

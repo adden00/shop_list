@@ -85,7 +85,16 @@ class ShopListItemsFragment : Fragment() {
         setUi()
         subscribeOnState()
         viewModel.newEvent(ShopListItemsEvent.LoadAllItems(currentShopList.id))
+    }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.newEvent(ShopListItemsEvent.SubscribeOnUpdating(currentShopList.id))
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.newEvent(ShopListItemsEvent.UnSubscribeOnUpdating(currentShopList.id))
     }
 
     private fun subscribeOnState() {

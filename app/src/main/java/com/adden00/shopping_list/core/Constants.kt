@@ -6,4 +6,5 @@ object Constants {
     const val BASE_URL = "https://cyberprot.ru/shopping/v3/"
     const val NAVIGATION_ITEM_KEY = "001"
     const val PHONE_LENGTH = 12
+    const val UPDATE_DELAY: Long = 5000 // 5 сек
 }

@@ -1,7 +1,9 @@
 package com.adden00.shopping_list.features.shop_list_items_screen.presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.adden00.shopping_list.core.Constants
 import com.adden00.shopping_list.features.shop_list_items_screen.domain.use_cases.AddNewItemUseCase
 import com.adden00.shopping_list.features.shop_list_items_screen.domain.use_cases.CrossItemUseCase
 import com.adden00.shopping_list.features.shop_list_items_screen.domain.use_cases.LoadAllItemsUseCase
@@ -10,6 +12,8 @@ import com.adden00.shopping_list.features.shop_list_items_screen.presentation.mv
 import com.adden00.shopping_list.features.shop_list_items_screen.presentation.mvi.ShopListItemsEvent
 import com.adden00.shopping_list.features.shop_list_items_screen.presentation.mvi.ShopListItemsState
 import com.adden00.shopping_list.features.shop_list_items_screen.presentation.utills.toPresentation
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,6 +27,7 @@ class ShopListItemsViewModel @Inject constructor(
     private val removeItemUseCase: RemoveItemUseCase,
     private val crossItemUseCase: CrossItemUseCase
 ): ViewModel() {
+    private var isSubscribed = false
     private val _shopListItemsState = MutableStateFlow(ShopListItemsState())
     val shopListItemsState: StateFlow<ShopListItemsState> get() = _shopListItemsState.asStateFlow()
 
@@ -63,10 +68,8 @@ class ShopListItemsViewModel @Inject constructor(
                     finally {
                         _shopListItemsState.update { it.copy(isLoading = false) }
                         _shopListItemsEffect.update { ShopListItemsEffect.Waiting }
-
                     }
                 }
-
             }
 
             is ShopListItemsEvent.RemoveItem -> {
@@ -78,7 +81,6 @@ class ShopListItemsViewModel @Inject constructor(
                     }
                     catch (e: Exception) {
                         _shopListItemsEffect.update { ShopListItemsEffect.ShowInternetError }
-
                     }
                     finally {
                         _shopListItemsState.update { it.copy(isUpdating = false) }
@@ -93,15 +95,33 @@ class ShopListItemsViewModel @Inject constructor(
                     try {
                         val newList = crossItemUseCase(event.listId, event.itemId).map{it.toPresentation()}
                         _shopListItemsState.update { it.copy(list = newList) }
-                    }
-                    catch (e: Exception) {
+                    } catch (e: Exception) {
                         _shopListItemsEffect.update { ShopListItemsEffect.ShowInternetError }
-                    }
-                    finally {
+                    } finally {
                         _shopListItemsState.update { it.copy(isUpdating = false) }
                         _shopListItemsEffect.update { ShopListItemsEffect.Waiting }
                     }
                 }
+            }
+
+            is ShopListItemsEvent.SubscribeOnUpdating -> {
+                isSubscribed = true
+
+                viewModelScope.launch(Dispatchers.IO) {
+                    while (isSubscribed) {
+                        try {
+                            val list = loadAllItemsUseCase(event.listId).map { it.toPresentation() }
+                            _shopListItemsState.update { it.copy(list = list) }
+                            Log.d("UpdateList", "updated")
+                        } catch (_: Exception) {
+                        }
+                        delay(Constants.UPDATE_DELAY)
+                    }
+                }
+            }
+
+            is ShopListItemsEvent.UnSubscribeOnUpdating -> {
+                isSubscribed = false
             }
         }
     }
