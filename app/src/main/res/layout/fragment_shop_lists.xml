@@ -38,8 +38,10 @@
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+            app:layout_constraintVertical_bias="0.0" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabNewList"
@@ -58,6 +60,7 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/pbarIsUpdating"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -74,15 +77,19 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp" />
         </androidx.cardview.widget.CardView>
+
         <ProgressBar
+            android:visibility="gone"
             android:id="@+id/pbarListLoading"
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="@+id/rcShopLists"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/rcShopLists" />
+            app:layout_constraintTop_toTopOf="@+id/rcShopLists"
+            app:layout_constraintVertical_bias="0.497" />
 
         <TextView
             android:id="@+id/tvEmptyList"
@@ -120,6 +127,19 @@
             app:layout_constraintBottom_toBottomOf="@+id/tvAccountIdTitle"
             app:layout_constraintStart_toEndOf="@+id/tvAccountIdTitle"
             app:layout_constraintTop_toTopOf="@+id/tvAccountIdTitle" />
+
+        <Button
+            android:id="@+id/btnOpenCards"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            style="@style/button_style"
+            android:layout_marginBottom="8dp"
+            android:text="@string/my_discount_cards"
+            app:layout_constraintBottom_toTopOf="@+id/tvAccountIdTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -90,6 +90,9 @@ class ShopListsFragment : Fragment() {
         binding.fabNewList.setOnClickListener {
             showCreateListDialog()
         }
+        binding.btnOpenCards.setOnClickListener {
+            navigateToCards()
+        }
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.newEvent(ShopListEvent.GetAllShopLists)
         }
@@ -113,6 +116,7 @@ class ShopListsFragment : Fragment() {
             true
         }
     }
+
 
 
     private fun subscribeOnState() {
@@ -144,8 +148,7 @@ class ShopListsFragment : Fragment() {
             }
 
             is ShopListEffect.LogOut -> {
-                findNavController().popBackStack()
-                findNavController().navigate(R.id.main_nav)
+                logOut()
             }
 
             is ShopListEffect.ShowMessage -> {
@@ -211,4 +214,14 @@ class ShopListsFragment : Fragment() {
             Snackbar.LENGTH_SHORT
         ).show()
     }
+
+    private fun navigateToCards() {
+        findNavController().navigate(R.id.action_shopListFragment_to_cardsFragment)
+    }
+
+    private fun logOut() {
+        findNavController().popBackStack()
+        findNavController().navigate(R.id.main_nav)
+    }
+
 }

@@ -3,6 +3,9 @@ package com.adden00.shopping_list.app.di
 import com.adden00.shopping_list.features.auth_screen.data.AuthApiClient
 import com.adden00.shopping_list.features.auth_screen.data.AuthRepositoryImpl
 import com.adden00.shopping_list.features.auth_screen.domain.AuthRepository
+import com.adden00.shopping_list.features.cards.data.CardsApiClient
+import com.adden00.shopping_list.features.cards.data.CardsRepositoryImpl
+import com.adden00.shopping_list.features.cards.domain.CardsRepository
 import com.adden00.shopping_list.features.shop_list_items_screen.data.ShopListItemApiClient
 import com.adden00.shopping_list.features.shop_list_items_screen.data.repository.ShopListItemsRepositoryImpl
 import com.adden00.shopping_list.features.shop_list_items_screen.domain.ShopListItemsRepository
@@ -17,6 +20,10 @@ class RepositoryModule {
     @Provides
     fun provideShopListRepo(api: ShopListApiClient): ShopListsRepository =
         ShopListsRepositoryImpl(api)
+
+    @Provides
+    fun provideCardsRepo(api: CardsApiClient): CardsRepository =
+        CardsRepositoryImpl(api)
 
     @Provides
     fun provideAuthRepo(api: AuthApiClient): AuthRepository =

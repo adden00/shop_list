@@ -26,28 +26,27 @@ class ShopListItemsViewModel @Inject constructor(
     private val loadAllItemsUseCase: LoadAllItemsUseCase,
     private val removeItemUseCase: RemoveItemUseCase,
     private val crossItemUseCase: CrossItemUseCase
-): ViewModel() {
+) : ViewModel() {
     private var isSubscribed = false
     private val _shopListItemsState = MutableStateFlow(ShopListItemsState())
     val shopListItemsState: StateFlow<ShopListItemsState> get() = _shopListItemsState.asStateFlow()
 
-    private val _shopListItemsEffect = MutableStateFlow<ShopListItemsEffect>(ShopListItemsEffect.Waiting)
+    private val _shopListItemsEffect =
+        MutableStateFlow<ShopListItemsEffect>(ShopListItemsEffect.Waiting)
     val shopListItemsEffect: StateFlow<ShopListItemsEffect> get() = _shopListItemsEffect.asStateFlow()
 
     fun newEvent(event: ShopListItemsEvent) {
-        when(event) {
+        when (event) {
             is ShopListItemsEvent.AddNewItem -> {
                 _shopListItemsState.update { it.copy(isUpdating = true) }
                 viewModelScope.launch {
                     try {
-                        val newList = addNewItemUseCase(event.listId, event.name).map{it.toPresentation()}
+                        val newList =
+                            addNewItemUseCase(event.listId, event.name).map { it.toPresentation() }
                         _shopListItemsState.update { it.copy(list = newList) }
-                    }
-                    catch (e: Exception) {
+                    } catch (e: Exception) {
                         _shopListItemsEffect.update { ShopListItemsEffect.ShowInternetError }
-
-                    }
-                    finally {
+                    } finally {
                         _shopListItemsState.update { it.copy(isUpdating = false) }
                         _shopListItemsEffect.update { ShopListItemsEffect.Waiting }
                     }
@@ -59,13 +58,11 @@ class ShopListItemsViewModel @Inject constructor(
                 _shopListItemsState.update { it.copy(isLoading = true) }
                 viewModelScope.launch {
                     try {
-                        val list = loadAllItemsUseCase(event.listId).map{it.toPresentation()}
+                        val list = loadAllItemsUseCase(event.listId).map { it.toPresentation() }
                         _shopListItemsState.update { it.copy(list = list) }
-                    }
-                    catch (e: Exception) {
+                    } catch (e: Exception) {
                         _shopListItemsEffect.update { ShopListItemsEffect.ShowInternetError }
-                    }
-                    finally {
+                    } finally {
                         _shopListItemsState.update { it.copy(isLoading = false) }
                         _shopListItemsEffect.update { ShopListItemsEffect.Waiting }
                     }
@@ -76,13 +73,14 @@ class ShopListItemsViewModel @Inject constructor(
                 _shopListItemsState.update { it.copy(isUpdating = true) }
                 viewModelScope.launch {
                     try {
-                        val newList = removeItemUseCase(event.listId, event.itemId).map{it.toPresentation()}
+                        val newList = removeItemUseCase(
+                            event.listId,
+                            event.itemId
+                        ).map { it.toPresentation() }
                         _shopListItemsState.update { it.copy(list = newList) }
-                    }
-                    catch (e: Exception) {
+                    } catch (e: Exception) {
                         _shopListItemsEffect.update { ShopListItemsEffect.ShowInternetError }
-                    }
-                    finally {
+                    } finally {
                         _shopListItemsState.update { it.copy(isUpdating = false) }
                         _shopListItemsEffect.update { ShopListItemsEffect.Waiting }
                     }
@@ -93,7 +91,8 @@ class ShopListItemsViewModel @Inject constructor(
                 _shopListItemsState.update { it.copy(isUpdating = true) }
                 viewModelScope.launch {
                     try {
-                        val newList = crossItemUseCase(event.listId, event.itemId).map{it.toPresentation()}
+                        val newList =
+                            crossItemUseCase(event.listId, event.itemId).map { it.toPresentation() }
                         _shopListItemsState.update { it.copy(list = newList) }
                     } catch (e: Exception) {
                         _shopListItemsEffect.update { ShopListItemsEffect.ShowInternetError }
@@ -106,7 +105,7 @@ class ShopListItemsViewModel @Inject constructor(
 
             is ShopListItemsEvent.SubscribeOnUpdating -> {
                 isSubscribed = true
-
+                Log.d("UpdateList", "started")
                 viewModelScope.launch(Dispatchers.IO) {
                     while (isSubscribed) {
                         try {
@@ -122,6 +121,7 @@ class ShopListItemsViewModel @Inject constructor(
 
             is ShopListItemsEvent.UnSubscribeOnUpdating -> {
                 isSubscribed = false
+                Log.d("UpdateList", "stopped")
             }
         }
     }

@@ -35,4 +35,9 @@
     <string name="create_account">Create account</string>
     <string name="phone">Phone</string>
     <string name="your_account_id">Your account id:</string>
+    <string name="card_code">card code</string>
+    <string name="card_name">card name</string>
+    <string name="my_cards">My cards</string>
+    <string name="my_discount_cards">My discount cards</string>
+    <string name="no_cards_please_add_the_first">No cards. Please add the first!</string>
 </resources>

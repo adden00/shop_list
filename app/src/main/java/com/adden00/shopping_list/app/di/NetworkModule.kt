@@ -2,6 +2,7 @@ package com.adden00.shopping_list.app.di
 
 import com.adden00.shopping_list.core.Constants
 import com.adden00.shopping_list.features.auth_screen.data.AuthApiClient
+import com.adden00.shopping_list.features.cards.data.CardsApiClient
 import com.adden00.shopping_list.features.shop_list_items_screen.data.ShopListItemApiClient
 import com.adden00.shopping_list.features.shop_lists_screen.data.ShopListApiClient
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
@@ -48,6 +49,21 @@ class NetworkModule {
             )
             .build()
             .create(ShopListItemApiClient::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCardsApiClient(client: OkHttpClient): CardsApiClient {
+        val json = Json { ignoreUnknownKeys = true }
+        return Retrofit.Builder()
+            .client(client)
+            .baseUrl(Constants.BASE_URL)
+            .addConverterFactory(
+                @OptIn(ExperimentalSerializationApi::class)
+                json.asConverterFactory("application/json".toMediaType())
+            )
+            .build()
+            .create(CardsApiClient::class.java)
     }
 
     @Provides

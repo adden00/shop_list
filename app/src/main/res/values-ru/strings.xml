@@ -31,4 +31,9 @@
     <string name="create_account">Создать аккаунт</string>
     <string name="phone">Телефон</string>
     <string name="your_account_id">Ваш id аккаунта:</string>
+    <string name="card_code">код карты</string>
+    <string name="card_name">название карты</string>
+    <string name="my_cards">My cards</string>
+    <string name="my_discount_cards">My discount cards</string>
+    <string name="no_cards_please_add_the_first">No cards. Please add the first!</string>
 </resources>
