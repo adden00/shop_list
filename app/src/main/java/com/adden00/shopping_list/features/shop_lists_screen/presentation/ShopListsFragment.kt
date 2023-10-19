@@ -109,13 +109,9 @@ class ShopListsFragment : Fragment() {
                 R.id.logOut -> {
                     viewModel.newEvent(ShopListEvent.LogOut)
                 }
-                R.id.copyToken -> {
-
-                }
             }
             true
         }
-
     }
 
 
@@ -132,7 +128,8 @@ class ShopListsFragment : Fragment() {
     }
 
     private fun render(state: ShopListState) {
-        binding.tvEmptyList.visibility = if(state.list.isEmpty()) View.VISIBLE else View.GONE
+        binding.tvEmptyList.visibility =
+            if (state.list.isEmpty() && !state.isLoading) View.VISIBLE else View.GONE
         binding.pbarListLoading.visibility = if (state.isLoading) View.VISIBLE else View.GONE
         binding.pbarIsUpdating.visibility = if (state.isUpdating) View.VISIBLE else View.GONE
         binding.swipeRefresh.isRefreshing = false

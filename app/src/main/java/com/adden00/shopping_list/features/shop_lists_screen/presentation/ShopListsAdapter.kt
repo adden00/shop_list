@@ -16,15 +16,17 @@ class ShopListsAdapter(private val listener: OnClickListener<ShopListModel>): Li
     inner class ItemHolder(private val binding: ShopListsItemBinding): RecyclerView.ViewHolder(binding.root) {
         fun render(item: ShopListModel) {
             binding.textView.text = item.name
-            itemView.setOnClickListener{
+            itemView.setOnClickListener {
                 listener.onClick(item)
+            }
+            binding.imRemove.setOnClickListener {
+                listener.onLongClick(item)
             }
             itemView.setOnLongClickListener {
                 listener.onLongClick(item)
                 true
             }
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder =

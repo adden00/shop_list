@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.adden00.shopping_list.R
 import com.adden00.shopping_list.app.di.ui.DaggerAuthComponent
 import com.adden00.shopping_list.app.getAppComponent
+import com.adden00.shopping_list.core.Constants
 import com.adden00.shopping_list.core.ViewModelFactory
 import com.adden00.shopping_list.databinding.DialogInputBinding
 import com.adden00.shopping_list.databinding.DialogRegisterBinding
@@ -133,9 +134,13 @@ class AuthFragment : Fragment() {
             edName.addTextChangedListener {
                 btnCreate.isEnabled = !it.isNullOrEmpty()
             }
+            edPhone.setOnFocusChangeListener { _, isFocised ->
+                if (isFocised && edPhone.text.isNullOrEmpty())
+                    edPhone.setText("+7")
+            }
 
             btnCreate.setOnClickListener {
-                if (edPhone.text?.length == 10 && !checkEmail(edPhone.text.toString())) {
+                if (edPhone.text?.length == Constants.PHONE_LENGTH && !checkEmail(edPhone.text.toString())) {
                     viewModel.registerNewAccount(
                         edName.text.toString(),
                         edMail.text.toString(),
@@ -143,9 +148,11 @@ class AuthFragment : Fragment() {
                     )
                     dialog.dismiss()
                 } else if (!checkEmail(edMail.text.toString()))
-                    Snackbar.make(dialogBinding.root, "Write correct email!", Snackbar.LENGTH_SHORT).show()
-                else if (edPhone.text?.length != 10)
-                    Snackbar.make(dialogBinding.root, "Write correct phone", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(dialogBinding.root, "Write correct email!", Snackbar.LENGTH_SHORT)
+                        .show()
+                else if (edPhone.text?.length != Constants.PHONE_LENGTH)
+                    Snackbar.make(dialogBinding.root, "Write correct phone", Snackbar.LENGTH_SHORT)
+                        .show()
             }
         }
         dialog.window?.decorView?.setBackgroundResource(R.drawable.bg_dialog)

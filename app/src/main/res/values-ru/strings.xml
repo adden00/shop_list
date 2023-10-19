@@ -22,7 +22,7 @@
     <string name="no">Нет</string>
     <string name="confirm_text">Подтвердить</string>
     <string name="itemname">Название позиции</string>
-    <string name="do_you_want_to_remove">Вы уверены что хотите удалить</string>
+    <string name="do_you_want_to_remove">"Вы уверены что хотите удалить "</string>
     <string name="my_shopping_lists">Мои списки покупок</string>
     <string name="no_internet_please_try_again">Отсутствует подключение к интернету. Повторите попытку!</string>
     <string name="try_again">Повторить</string>

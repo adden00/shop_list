@@ -6,7 +6,4 @@
         android:title="@string/log_out"
         app:showAsAction="never"/>
 
-    <item android:id="@+id/copyToken"
-        android:title="@string/copy_account_id"
-        app:showAsAction="never"/>
 </menu>

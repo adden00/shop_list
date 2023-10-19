@@ -5,4 +5,5 @@ object Constants {
     const val PREFS_KEY = "prefs"
     const val BASE_URL = "https://cyberprot.ru/shopping/v3/"
     const val NAVIGATION_ITEM_KEY = "001"
+    const val PHONE_LENGTH = 12
 }

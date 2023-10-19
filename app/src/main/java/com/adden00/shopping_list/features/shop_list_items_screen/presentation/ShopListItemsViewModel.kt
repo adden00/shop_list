@@ -9,6 +9,7 @@ import com.adden00.shopping_list.features.shop_list_items_screen.domain.use_case
 import com.adden00.shopping_list.features.shop_list_items_screen.presentation.mvi.ShopListItemsEffect
 import com.adden00.shopping_list.features.shop_list_items_screen.presentation.mvi.ShopListItemsEvent
 import com.adden00.shopping_list.features.shop_list_items_screen.presentation.mvi.ShopListItemsState
+import com.adden00.shopping_list.features.shop_list_items_screen.presentation.utills.toPresentation
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -28,7 +29,6 @@ class ShopListItemsViewModel @Inject constructor(
     private val _shopListItemsEffect = MutableStateFlow<ShopListItemsEffect>(ShopListItemsEffect.Waiting)
     val shopListItemsEffect: StateFlow<ShopListItemsEffect> get() = _shopListItemsEffect.asStateFlow()
 
-
     fun newEvent(event: ShopListItemsEvent) {
         when(event) {
             is ShopListItemsEvent.AddNewItem -> {
@@ -45,7 +45,6 @@ class ShopListItemsViewModel @Inject constructor(
                     finally {
                         _shopListItemsState.update { it.copy(isUpdating = false) }
                         _shopListItemsEffect.update { ShopListItemsEffect.Waiting }
-
                     }
                 }
             }

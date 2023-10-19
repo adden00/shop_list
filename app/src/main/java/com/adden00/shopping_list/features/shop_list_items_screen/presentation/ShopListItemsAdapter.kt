@@ -18,7 +18,10 @@ class ShopListItemsAdapter(private val listener: OnClickListener<ShopListItemMod
         fun render(item: ShopListItemModel) {
 
             binding.checkbox.isChecked = item.isCrossed
-            itemView.setOnClickListener{
+            binding.imRemove.setOnClickListener {
+                listener.onLongClick(item)
+            }
+            itemView.setOnClickListener {
                 listener.onClick(item)
             }
             itemView.setOnLongClickListener {

@@ -101,11 +101,12 @@ class ShopListItemsFragment : Fragment() {
     }
 
     private fun render(state: ShopListItemsState) {
-        binding.tvEmptyList.visibility = if (state.list.isEmpty()) View.VISIBLE else View.GONE
+        binding.tvEmptyList.visibility =
+            if (state.list.isEmpty() && !state.isLoading) View.VISIBLE else View.GONE
         binding.swipeRefresh.isRefreshing = false
         binding.pbarLoading.visibility = if (state.isLoading) View.VISIBLE else View.GONE
         binding.pbarIsUpdating.visibility = if (state.isUpdating) View.VISIBLE else View.GONE
-        adapter.submitList(state.list)
+        adapter.submitList(state.list.sortedBy { it.isCrossed })
     }
 
     private fun handleEffect(effect: ShopListItemsEffect) {
@@ -113,7 +114,6 @@ class ShopListItemsFragment : Fragment() {
             is ShopListItemsEffect.ShowInternetError -> {
                 showSnackBar(getString(R.string.internet_error))
             }
-
             is ShopListItemsEffect.Waiting -> Unit
         }
     }
