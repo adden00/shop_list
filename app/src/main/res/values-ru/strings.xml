@@ -33,7 +33,11 @@
     <string name="your_account_id">Ваш id аккаунта:</string>
     <string name="card_code">код карты</string>
     <string name="card_name">название карты</string>
-    <string name="my_cards">My cards</string>
-    <string name="my_discount_cards">My discount cards</string>
-    <string name="no_cards_please_add_the_first">No cards. Please add the first!</string>
+    <string name="my_cards">Мои карты</string>
+    <string name="my_discount_cards">Мои дисконтные карты</string>
+    <string name="no_cards_please_add_the_first">Нет доступных карт. Добавьте первую!</string>
+    <string name="add_new_card">Добавить новую карту</string>
+    <string name="number">Номер</string>
+    <string name="fill_all_fields">Заполните все поля!</string>
+    <string name="close">Закрыть</string>
 </resources>

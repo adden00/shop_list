@@ -96,6 +96,7 @@ class ShopListsFragment : Fragment() {
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.newEvent(ShopListEvent.GetAllShopLists)
         }
+        binding.btnOpenCards.visibility = if (Constants.CARDS_TOGGLE) View.VISIBLE else View.GONE
         binding.tvAccountId.setOnClickListener {
             viewModel.newEvent(ShopListEvent.CopyShopListId { content ->
                 val clipboard =
