@@ -56,5 +56,10 @@ dependencies {
     implementation deps.dagger
     implementation deps.scalars_converter
     implementation deps.zxing
+    implementation deps.mobile_vision
     kapt deps.daggetKapt
+    implementation 'me.dm7.barcodescanner:zxing:1.9'
+    implementation 'com.github.QuadFlask:colorpicker:0.0.15'
+
+
 }

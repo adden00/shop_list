@@ -9,17 +9,21 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.adden00.shopping_list.R
 import com.adden00.shopping_list.app.di.ui.DaggerCardsComponent
 import com.adden00.shopping_list.app.getAppComponent
 import com.adden00.shopping_list.core.ViewModelFactory
 import com.adden00.shopping_list.core.utills.OnCardClickListener
-import com.adden00.shopping_list.databinding.DialogAddNewCardBinding
+import com.adden00.shopping_list.databinding.DialogAddNewCardBaseBinding
+import com.adden00.shopping_list.databinding.DialogAddNewCardByNumBinding
+import com.adden00.shopping_list.databinding.DialogAddNewCardByQrBinding
 import com.adden00.shopping_list.databinding.DialogQrBinding
 import com.adden00.shopping_list.databinding.FragmentCardsBinding
 import com.adden00.shopping_list.features.cards.presentation.models.CardModelPres
@@ -34,13 +38,14 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
+
 class CardsFragment : Fragment() {
     private var _binding: FragmentCardsBinding? = null
     private val binding get() = _binding!!
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
-    private val viewModel: CardsViewModel by viewModels { viewModelFactory }
+    private val viewModel: CardsViewModel by activityViewModels { viewModelFactory }
     private val adapter by lazy {
         CardsAdapter(object : OnCardClickListener {
             override fun onClick(item: CardModelPres) {
@@ -123,12 +128,62 @@ class CardsFragment : Fragment() {
             viewModel.newEvent(CardsEvent.GetCards)
         }
         binding.fabNewCard.setOnClickListener {
+            showCreateCardDialog()
         }
     }
 
     private fun showCreateCardDialog() {
         val dialogBinding =
-            DialogAddNewCardBinding.inflate(LayoutInflater.from(requireContext()))
+            DialogAddNewCardBaseBinding.inflate(LayoutInflater.from(requireContext()))
+        val dialog =
+            AlertDialog.Builder(requireContext()).apply { setView(dialogBinding.root) }.create()
+
+        with(dialogBinding) {
+            btnCreateByQr.setOnClickListener {
+                showCreateCardByQrDialog()
+                dialog.dismiss()
+            }
+            btnCreateByNum.setOnClickListener {
+                showCreateCardByIdDialog()
+                dialog.dismiss()
+            }
+        }
+        dialog.window?.decorView?.setBackgroundResource(R.drawable.bg_dialog)
+        dialog.show()
+    }
+
+
+    private fun showCreateCardByQrDialog() {
+        val dialogBinding =
+            DialogAddNewCardByQrBinding.inflate(LayoutInflater.from(requireContext()))
+        val dialog =
+            AlertDialog.Builder(requireContext()).apply { setView(dialogBinding.root) }.create()
+
+        with(dialogBinding) {
+            btnCreateByQr.setOnClickListener {
+                if (!edName.text.isNullOrEmpty()) {
+                    findNavController().navigate(
+                        R.id.action_cardsFragment_to_qrScannerFragment,
+                        bundleOf(QrScannerFragment.CARD_NAME_KEY to edName.text!!.toString())
+                    )
+                    dialog.dismiss()
+                } else {
+                    Snackbar.make(
+                        binding.root,
+                        getString(R.string.fill_all_fields),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+
+        dialog.window?.decorView?.setBackgroundResource(R.drawable.bg_dialog)
+        dialog.show()
+    }
+
+    private fun showCreateCardByIdDialog() {
+        val dialogBinding =
+            DialogAddNewCardByNumBinding.inflate(LayoutInflater.from(requireContext()))
         val dialog =
             AlertDialog.Builder(requireContext()).apply { setView(dialogBinding.root) }.create()
 
@@ -165,6 +220,8 @@ class CardsFragment : Fragment() {
         val dialog =
             AlertDialog.Builder(requireContext()).apply { setView(dialogBinding.root) }.create()
         dialogBinding.imQr.setImageBitmap(getQrCodeBitmap(code, format))
+        if (format == BarcodeFormat.CODABAR)
+            dialogBinding.imQr.maxHeight = dialogBinding.imQr.height / 2
         dialogBinding.btClose.setOnClickListener {
             dialog.dismiss()
         }
@@ -175,8 +232,6 @@ class CardsFragment : Fragment() {
 
     private fun getQrCodeBitmap(content: String, format: BarcodeFormat): Bitmap {
         val size = 512 //pixels
-//        val qrCodeContent = "WIFI:S:$ssid;T:WPA;P:$password;;"
-//        val hints = hashMapOf<EncodeHintType, Int>().also { it[EncodeHintType.MARGIN] = 1 } // Make the QR code buffer border narrower
         val bits = MultiFormatWriter().encode(content, format, size, size)
         return Bitmap.createBitmap(size, size, Bitmap.Config.RGB_565).also {
             for (x in 0 until size) {
@@ -186,4 +241,6 @@ class CardsFragment : Fragment() {
             }
         }
     }
+
 }
+

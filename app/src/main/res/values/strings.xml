@@ -44,4 +44,7 @@
     <string name="number">Number</string>
     <string name="fill_all_fields">fill all fields!</string>
     <string name="close">Close</string>
+    <string name="create_by_qr">Create by QR</string>
+    <string name="unknown">unknown</string>
+    <string name="create_by_number">Create by number</string>
 </resources>

@@ -14,7 +14,8 @@ ext.versions = [
         dagger               : '2.45',
         swipe_refresh        : '1.1.0',
         scalars_converter    : '2.9.0',
-        zxing                : '3.4.0'
+        zxing                : '3.4.0',
+        mobile_vision        : '20.1.2'
 ]
 
 
@@ -35,6 +36,7 @@ ext.deps = [
         daggetKapt           : "com.google.dagger:dagger-compiler:${versions.dagger}",
         swipe_refresh        : "androidx.swiperefreshlayout:swiperefreshlayout:${versions.swipe_refresh}",
         scalars_converter    : "com.squareup.retrofit2:converter-scalars:${versions.scalars_converter}",
-        zxing                : "com.google.zxing:core:${versions.zxing}"
+        zxing                : "com.google.zxing:core:${versions.zxing}",
+        mobile_vision        : "com.google.android.gms:play-services-vision:${versions.mobile_vision}"
 
 ]

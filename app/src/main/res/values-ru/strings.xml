@@ -40,4 +40,9 @@
     <string name="number">Номер</string>
     <string name="fill_all_fields">Заполните все поля!</string>
     <string name="close">Закрыть</string>
+    <string name="create_by_qr">Добавить по QR</string>
+    <string name="unknown">неизвестно</string>
+    <string name="create_by_number">Добавить по номеру</string>
+
+
 </resources>
