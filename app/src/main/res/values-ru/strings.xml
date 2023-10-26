@@ -43,6 +43,8 @@
     <string name="create_by_qr">Добавить по QR</string>
     <string name="unknown">неизвестно</string>
     <string name="create_by_number">Добавить по номеру</string>
+    <string name="clear_cards">Удалить все карты</string>
+    <string name="do_you_want_to_delete_card">Вы уверены что хотите удалит карту?</string>
 
 
 </resources>
