@@ -1,5 +1,6 @@
 package com.adden00.shopping_list.app.di
 
+import com.adden00.shopping_list.BuildConfig
 import com.adden00.shopping_list.core.Constants
 import com.adden00.shopping_list.features.auth_screen.data.AuthApiClient
 import com.adden00.shopping_list.features.cards.data.CardsApiClient
@@ -12,6 +13,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.TimeUnit
@@ -88,5 +90,10 @@ class NetworkModule {
         OkHttpClient.Builder()
             .callTimeout(10, TimeUnit.SECONDS)
             .connectTimeout(5, TimeUnit.SECONDS)
+            .addInterceptor(HttpLoggingInterceptor().apply {
+                level =
+                    if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
+            }
+            )
             .build()
 }

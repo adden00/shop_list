@@ -4,92 +4,98 @@
     android:id="@+id/card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="20dp"
-    app:cardElevation="2dp"
+    android:layout_margin="4dp"
     app:cardBackgroundColor="@color/light_green"
-    android:layout_margin="4dp">
+    app:cardCornerRadius="15dp">
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/content"
-            android:layout_width="match_parent"
-            android:padding="8dp"
-            android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="4dp">
 
 
-            <TextView
-                android:id="@+id/tvCardName"
-                style="@style/title_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/card_name"
-                app:layout_constraintEnd_toStartOf="@+id/btnColor"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/tvCardName"
+            style="@style/middle_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:gravity="center"
+            android:text="@string/card_name"
+            app:layout_constraintEnd_toStartOf="@+id/btnColor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <FrameLayout
-                android:id="@+id/btnColor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:padding="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageView
-                    android:id="@+id/imColor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_btn_select_color" />
-            </FrameLayout>
-
-            <ImageView
-                android:id="@+id/imQr"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:src="@drawable/ic_qr_preview"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvCardName" />
-
-            <TextView
-                android:id="@+id/tv_card_code"
-                style="@style/small_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:gravity="center"
-                android:singleLine="true"
-                android:text="@string/card_code"
-                app:layout_constraintStart_toEndOf="@+id/imQr"
-                app:layout_constraintTop_toBottomOf="@+id/tvCardName" />
-
-            <ImageView
-                android:id="@+id/imBarcode"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                app:layout_constraintBottom_toBottomOf="@+id/imQr"
-                app:layout_constraintStart_toEndOf="@+id/imQr"
-                app:srcCompat="@drawable/ic_barcode_preview" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <ImageView
-            android:id="@+id/imAdd"
+        <FrameLayout
+            android:id="@+id/btnColor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:elevation="100dp"
-            android:layout_gravity="center"
-            android:visibility="visible"
-            android:src="@drawable/ic_add_card" />
-    </FrameLayout>
+            android:padding="6dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/imColor"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                app:srcCompat="@drawable/ic_select_color" />
+        </FrameLayout>
+
+        <ImageView
+            android:id="@+id/imQr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/ic_qr_preview"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvCardName" />
+
+        <TextView
+            android:id="@+id/tv_card_code"
+            style="@style/small_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="@string/card_code"
+            app:layout_constraintBottom_toTopOf="@+id/imBarcode"
+            app:layout_constraintStart_toStartOf="@+id/imBarcode" />
+
+        <ImageView
+            android:id="@+id/imBarcode"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imQr"
+            app:layout_constraintEnd_toStartOf="@+id/imRemove"
+            app:layout_constraintStart_toEndOf="@+id/imQr"
+            app:srcCompat="@drawable/ic_barcode_preview" />
+
+        <FrameLayout
+            android:id="@+id/imRemove"
+            android:layout_width="0dp"
+            android:layout_height="28dp"
+            android:layout_marginEnd="4dp"
+            app:layout_constraintDimensionRatio="1"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/bg_remove"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/ic_remove" />
+        </FrameLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.cardview.widget.CardView>

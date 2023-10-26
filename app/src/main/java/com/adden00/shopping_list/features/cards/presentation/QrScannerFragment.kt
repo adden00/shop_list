@@ -65,13 +65,13 @@ class QrScannerFragment : Fragment(), ResultHandler {
 
             when (it.barcodeFormat) {
 
-                BarcodeFormat.QR_CODE -> {
+                BarcodeFormat.CODE_128 -> {
                     viewModel.newEvent(
                         CardsEvent.AddCard(
                             cardName,
                             "",
-                            it.text,
                             "",
+                            it.text,
                             "#9F9F9F",
                         )
                     )
@@ -82,11 +82,12 @@ class QrScannerFragment : Fragment(), ResultHandler {
                         CardsEvent.AddCard(
                             cardName,
                             "",
-                            "",
                             it.text,
+                            "",
                             "#9F9F9F",
                         )
                     )
+
                     Log.d("scanner", "wrong type: ${it.barcodeFormat}")
                 }
             }

@@ -24,13 +24,13 @@ import com.adden00.shopping_list.core.utills.OnCardClickListener
 import com.adden00.shopping_list.databinding.DialogAddNewCardBaseBinding
 import com.adden00.shopping_list.databinding.DialogAddNewCardByNumBinding
 import com.adden00.shopping_list.databinding.DialogAddNewCardByQrBinding
+import com.adden00.shopping_list.databinding.DialogConfirmBinding
 import com.adden00.shopping_list.databinding.DialogQrBinding
 import com.adden00.shopping_list.databinding.FragmentCardsBinding
 import com.adden00.shopping_list.features.cards.presentation.models.CardModelPres
 import com.adden00.shopping_list.features.cards.presentation.mvi.CardsEffect
 import com.adden00.shopping_list.features.cards.presentation.mvi.CardsEvent
 import com.adden00.shopping_list.features.cards.presentation.mvi.CardsState
-import com.adden00.shopping_list.features.cards.presentation.utills.addEmptyCard
 import com.google.android.material.snackbar.Snackbar
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
@@ -52,18 +52,35 @@ class CardsFragment : Fragment() {
                 if (item.cardQr.isNotEmpty()) {
                     openQr(item.cardQr, BarcodeFormat.QR_CODE)
                 } else if (item.cardBarcode.isNotEmpty()) {
-                    openQr(item.cardBarcode, BarcodeFormat.CODABAR)
+                    openQr(item.cardBarcode, BarcodeFormat.QR_CODE)
                 } else {
-                    openQr(item.cardCode, BarcodeFormat.CODABAR)
+                    openQr(item.cardCode, BarcodeFormat.PDF_417)
                 }
             }
 
-            override fun onLongClick(item: CardModelPres) = Unit
+            override fun onLongClick(item: CardModelPres) {
+                removeCard(item.id)
+            }
+
             override fun onAddCard() {
                 showCreateCardDialog()
             }
+
+            override fun onUpdateCard(item: CardModelPres) {
+                viewModel.newEvent(
+                    CardsEvent.UpdateCard(
+                        item.cardName,
+                        item.id,
+                        item.cardCode,
+                        item.cardQr,
+                        item.cardBarcode,
+                        item.cardHex
+                    )
+                )
+            }
         })
     }
+
 
 
     override fun onAttach(context: Context) {
@@ -107,9 +124,9 @@ class CardsFragment : Fragment() {
         binding.tvEmptyList.visibility =
             if (state.cardsList.isEmpty() && !state.isLoading) View.VISIBLE else View.GONE
         binding.swipeRefresh.isRefreshing = false
-        val addedList = state.cardsList.addEmptyCard()
+        val addedList = state.cardsList
         Log.d("CardsFragment", addedList.toString())
-        adapter.submitList(state.cardsList.addEmptyCard())
+        adapter.submitList(state.cardsList)
     }
 
     private fun handleEffect(effect: CardsEffect) {
@@ -129,6 +146,12 @@ class CardsFragment : Fragment() {
         }
         binding.fabNewCard.setOnClickListener {
             showCreateCardDialog()
+        }
+        binding.toolbar.setOnMenuItemClickListener {
+            if (it.itemId == R.id.clearCards) {
+                viewModel.newEvent(CardsEvent.ClearCards)
+            }
+            true
         }
     }
 
@@ -202,7 +225,7 @@ class CardsFragment : Fragment() {
                     dialog.dismiss()
                 } else {
                     Snackbar.make(
-                        binding.root,
+                        dialogBinding.root,
                         getString(R.string.fill_all_fields),
                         Snackbar.LENGTH_SHORT
                     ).show()
@@ -220,12 +243,9 @@ class CardsFragment : Fragment() {
         val dialog =
             AlertDialog.Builder(requireContext()).apply { setView(dialogBinding.root) }.create()
         dialogBinding.imQr.setImageBitmap(getQrCodeBitmap(code, format))
-        if (format == BarcodeFormat.CODABAR)
-            dialogBinding.imQr.maxHeight = dialogBinding.imQr.height / 2
         dialogBinding.btClose.setOnClickListener {
             dialog.dismiss()
         }
-
         dialog.window?.decorView?.setBackgroundResource(R.drawable.bg_dialog)
         dialog.show()
     }
@@ -240,6 +260,25 @@ class CardsFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun removeCard(id: Int) {
+        val dialogBinding =
+            DialogConfirmBinding.inflate(LayoutInflater.from(requireContext()))
+        val dialog =
+            AlertDialog.Builder(requireContext()).apply { setView(dialogBinding.root) }.create()
+        with(dialogBinding) {
+            tvConfirmMessage.text = getString(R.string.do_you_want_to_delete_card)
+            btnNo.setOnClickListener {
+                dialog.dismiss()
+            }
+            btnYes.setOnClickListener {
+                viewModel.newEvent(CardsEvent.RemoveCard(id))
+                dialog.dismiss()
+            }
+        }
+        dialog.window?.decorView?.setBackgroundResource(R.drawable.bg_dialog)
+        dialog.show()
     }
 
 }

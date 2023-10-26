@@ -1,6 +1,7 @@
 package com.adden00.shopping_list.features.cards.presentation
 
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,18 +28,34 @@ class CardsAdapter(private val listener: OnCardClickListener) :
         RecyclerView.ViewHolder(binding.root) {
         fun render(item: CardModelPres) {
             if (!item.isAdding)
-                binding.card.setCardBackgroundColor(
-                    Color.parseColor(
-                        "#" + item.cardHex.replace(
-                            "#",
-                            ""
+                try {
+                    binding.card.setCardBackgroundColor(
+                        Color.parseColor(
+                            "#" + item.cardHex.replace(
+                                "#",
+                                ""
+                            )
                         )
                     )
+
+                } catch (e: IllegalArgumentException) {
+                    Log.d("card", "incorrect color! color: ${item.cardHex}")
+                }
+            binding.tvCardCode.text = if (item.cardCode.length > 7) "${
+                item.cardCode.substring(
+                    0,
+                    7
                 )
-            binding.tvCardCode.text = item.cardCode
+            }..." else item.cardCode
+
             binding.tvCardName.text = item.cardName
+
+
             binding.imColor.setOnClickListener {
-                openColorPicker()
+                openColorPicker(item)
+            }
+            binding.imRemove.setOnClickListener {
+                listener.onLongClick(item)
             }
             itemView.setOnClickListener {
                 if (item.isAdding)
@@ -47,36 +64,36 @@ class CardsAdapter(private val listener: OnCardClickListener) :
                     listener.onClick(item)
             }
             binding.content.visibility = if (item.isAdding) View.GONE else View.VISIBLE
-            binding.imAdd.visibility = if (item.isAdding) View.VISIBLE else View.GONE
-
 
         }
 
-        private fun openColorPicker() {
+        private fun openColorPicker(item: CardModelPres) {
             ColorPickerDialogBuilder
                 .with(binding.root.context)
                 .setTitle("Choose color")
                 .initialColor(binding.root.context.getColor(R.color.primary))
                 .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
                 .density(12)
-                .setOnColorSelectedListener { selectedColor ->
+                .setOnColorSelectedListener {
                 }
                 .setPositiveButton(
                     "ok"
-                ) { dialog, selectedColor, allColors ->
-                    val color = Integer.toHexString(selectedColor)
-                    binding.card.setCardBackgroundColor(
-                        Color.parseColor(
-                            "#" + color.replace(
-                                "#",
-                                ""
+                ) { _, selectedColor, _ ->
+                    val color = Integer.toHexString(selectedColor).uppercase()
+                    try {
+                        binding.card.setCardBackgroundColor(
+                            Color.parseColor(
+                                "#$color"
                             )
                         )
-                    )
+                        listener.onUpdateCard(item.copy(cardHex = color))
+                    } catch (e: IllegalArgumentException) {
+                        Log.d("card", "incorrect color! color: ${item.cardHex}")
+                    }
                 }
                 .setNegativeButton(
                     "cancel"
-                ) { dialog, which -> }
+                ) { _, _ -> }
                 .build()
                 .show()
         }

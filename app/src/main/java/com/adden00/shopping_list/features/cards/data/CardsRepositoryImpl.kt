@@ -31,6 +31,24 @@ class CardsRepositoryImpl @Inject constructor(private val api: CardsApiClient) :
         }
     }
 
+    override suspend fun updateCard(
+        cardName: String,
+        cardId: Int,
+        cardCode: String,
+        cardQr: String,
+        token: String,
+        cardBarcode: String,
+        cardHex: String
+    ) {
+        val response =
+            api.updateCard(cardName, cardId, cardCode, cardQr, token, cardBarcode, cardHex)
+        if (response.isSuccess) {
+            return
+        } else {
+            throw FalseSuccessResponseException("add card response is false")
+        }
+    }
+
     override suspend fun removeCard(token: String, id: Int) {
         val response = api.removeCard(token, id)
         if (response.isSuccess) {

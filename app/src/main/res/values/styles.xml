@@ -12,6 +12,10 @@
         <item name="android:textSize">22sp</item>
     </style>
 
+    <style name="middle_text" parent="text">
+        <item name="android:textSize">18sp</item>
+    </style>
+
     <style name="small_text" parent="text">
         <item name="android:textSize">12sp</item>
     </style>

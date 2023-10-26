@@ -13,5 +13,15 @@ interface CardsRepository {
         cardHex: String
     )
 
+    suspend fun updateCard(
+        cardName: String,
+        cardId: Int,
+        cardCode: String,
+        cardQr: String,
+        token: String,
+        cardBarcode: String,
+        cardHex: String
+    )
+
     suspend fun removeCard(token: String, id: Int)
 }
