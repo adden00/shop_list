@@ -25,6 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:menu="@menu/cards_menu"
+                android:background="@color/bg_up"
                 app:title="@string/my_cards"
                 app:titleTextAppearance="@style/title_text" />
 

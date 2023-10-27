@@ -4,8 +4,8 @@
 
     <style name="Theme.ShoppingList" parent="Base.Theme.ShoppingList">
         <item name="colorPrimary">@color/primary</item>
-        <item name="android:statusBarColor">@color/white</item>
+        <!--        <item name="android:statusBarColor">@color/white</item>-->
+        <item name="android:statusBarColor">@color/bg_up</item>
         <item name="android:windowLightStatusBar">true</item>
-
     </style>
 </resources>

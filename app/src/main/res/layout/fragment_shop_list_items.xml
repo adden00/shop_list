@@ -24,6 +24,7 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/bg_up"
                 app:title="@string/list_name"
                 app:titleTextAppearance="@style/title_text" />
         </com.google.android.material.appbar.AppBarLayout>

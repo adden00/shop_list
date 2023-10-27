@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/shopListFragment"
-        android:name="com.adden00.shopping_list.features.shop_lists_screen.presentation.ShopListsFragment"
+        android:name="ru.usafe.shopping.features.shop_lists_screen.presentation.ShopListsFragment"
         android:label="fragment_shop_list"
         tools:layout="@layout/fragment_shop_lists">
         <action
@@ -24,12 +24,12 @@
     </fragment>
     <fragment
         android:id="@+id/shopListItemsFragment"
-        android:name="com.adden00.shopping_list.features.shop_list_items_screen.presentation.ShopListItemsFragment"
+        android:name="ru.usafe.shopping.features.shop_list_items_screen.presentation.ShopListItemsFragment"
         android:label="fragment_shop_list_items"
         tools:layout="@layout/fragment_shop_list_items" />
     <fragment
         android:id="@+id/authFragment"
-        android:name="com.adden00.shopping_list.features.auth_screen.presentation.AuthFragment"
+        android:name="ru.usafe.shopping.features.auth_screen.presentation.AuthFragment"
         android:label="fragment_auth"
         tools:layout="@layout/fragment_auth">
         <action
@@ -40,7 +40,7 @@
     </fragment>
     <fragment
         android:id="@+id/startFragment"
-        android:name="com.adden00.shopping_list.features.start_screen.presentation.StartFragment"
+        android:name="ru.usafe.shopping.features.start_screen.presentation.StartFragment"
         android:label="fragment_start"
         tools:layout="@layout/fragment_start">
         <action
@@ -56,7 +56,7 @@
     </fragment>
     <fragment
         android:id="@+id/cardsFragment"
-        android:name="com.adden00.shopping_list.features.cards.presentation.CardsFragment"
+        android:name="ru.usafe.shopping.features.cards.presentation.CardsFragment"
         android:label="fragment_cards"
         tools:layout="@layout/fragment_cards">
         <action
@@ -65,7 +65,7 @@
     </fragment>
     <fragment
         android:id="@+id/qrScannerFragment"
-        android:name="com.adden00.shopping_list.features.cards.presentation.QrScannerFragment"
+        android:name="ru.usafe.shopping.features.cards.presentation.QrScannerFragment"
         android:label="fragment_qr_scanner"
         tools:layout="@layout/fragment_qr_scanner" />
 </navigation>

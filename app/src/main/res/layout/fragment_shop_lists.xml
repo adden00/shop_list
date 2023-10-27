@@ -7,11 +7,9 @@
     android:layout_height="match_parent"
     tools:context=".features.shop_lists_screen.presentation.ShopListsFragment">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
 
 
         <com.google.android.material.appbar.AppBarLayout
@@ -27,6 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:menu="@menu/shop_lists_menu"
+                android:background="@color/bg_up"
                 app:title="@string/my_shopping_lists"
                 app:titleTextAppearance="@style/title_text" />
         </com.google.android.material.appbar.AppBarLayout>

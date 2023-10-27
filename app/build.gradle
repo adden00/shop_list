@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace 'com.adden00.shopping_list'
+    namespace 'ru.usafe.shopping'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.adden00.shopping_list"
+        applicationId "ru.usafe.shopping"
         minSdk 24
         targetSdk 34
         versionCode 1

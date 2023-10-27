@@ -8,7 +8,7 @@
     <string name="create_new_account">Создать новый аккаунт</string>
     <string name="import_account_by_id">Войти в существующий аккаунт по id</string>
     <string name="log_in">Войти</string>
-    <string name="log_out">Выйти</string>
+    <string name="log_out">Выйти из аккаунта</string>
     <string name="internet_error">Ошибка подключения</string>
     <string name="wring_shopping_list_id">Неверный id!</string>
     <string name="copy_account_id">Скопировать id</string>
@@ -44,7 +44,7 @@
     <string name="unknown">неизвестно</string>
     <string name="create_by_number">Добавить по номеру</string>
     <string name="clear_cards">Удалить все карты</string>
-    <string name="do_you_want_to_delete_card">Вы уверены что хотите удалит карту?</string>
+    <string name="do_you_want_to_delete_card">Вы уверены что хотите удалить карту?</string>
 
 
 </resources>
