@@ -41,7 +41,7 @@ class CardsViewModel @Inject constructor(
     fun newEvent(event: CardsEvent) {
         when (event) {
             is CardsEvent.AddCard -> {
-                _cardsState.update { it.copy(isLoading = true) }
+                _cardsState.update { it.copy(isCreating = true) }
                 viewModelScope.launch {
                     try {
                         val newList = addCardUseCase(
@@ -58,7 +58,7 @@ class CardsViewModel @Inject constructor(
                         _cardsEffect.update { CardsEffect.InternetError }
                     } finally {
                         _cardsEffect.update { CardsEffect.Waiting }
-                        _cardsState.update { it.copy(isLoading = false) }
+                        _cardsState.update { it.copy(isCreating = false) }
                     }
                 }
             }

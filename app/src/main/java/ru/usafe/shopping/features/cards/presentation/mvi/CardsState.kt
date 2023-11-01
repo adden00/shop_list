@@ -6,5 +6,6 @@ data class CardsState(
     val isLoading: Boolean = false,
     val cardsList: List<CardModelPres> = listOf(),
     val isSearching: Boolean = false,
-    val searchedList: List<CardModelPres> = listOf()
+    val searchedList: List<CardModelPres> = listOf(),
+    val isCreating: Boolean = false,
 )

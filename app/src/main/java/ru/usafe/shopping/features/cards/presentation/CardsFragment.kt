@@ -47,38 +47,7 @@ class CardsFragment : Fragment() {
     lateinit var viewModelFactory: ViewModelFactory
     private val viewModel: CardsViewModel by activityViewModels { viewModelFactory }
     private val adapter by lazy {
-        CardsAdapter(object : OnCardClickListener {
-            override fun onClick(item: CardModelPres) {
-                if (item.cardQr.isNotEmpty()) {
-                    openQr(item.cardQr, BarcodeFormat.QR_CODE)
-                } else if (item.cardBarcode.isNotEmpty()) {
-                    openQr(item.cardBarcode, BarcodeFormat.QR_CODE)
-                } else {
-                    openQr(item.cardCode, BarcodeFormat.PDF_417)
-                }
-            }
-
-            override fun onLongClick(item: CardModelPres) {
-                removeCard(item.id)
-            }
-
-            override fun onAddCard() {
-                showCreateCardDialog()
-            }
-
-            override fun onUpdateCard(item: CardModelPres) {
-                viewModel.newEvent(
-                    CardsEvent.UpdateCard(
-                        item.cardName,
-                        item.id,
-                        item.cardCode,
-                        item.cardQr,
-                        item.cardBarcode,
-                        item.cardHex
-                    )
-                )
-            }
-        })
+        CardsAdapter(CardClickListener())
     }
 
 
@@ -122,6 +91,7 @@ class CardsFragment : Fragment() {
 
     private fun render(state: CardsState) {
         binding.pbarCardsLoading.visibility = if (state.isLoading) View.VISIBLE else View.GONE
+        binding.pbarCreating.visibility = if (state.isCreating) View.VISIBLE else View.GONE
         binding.tvEmptyList.visibility =
             if (state.cardsList.isEmpty() && !state.isLoading) View.VISIBLE else View.GONE
         binding.swipeRefresh.isRefreshing = false
@@ -135,9 +105,18 @@ class CardsFragment : Fragment() {
 
     private fun handleEffect(effect: CardsEffect) {
         when (effect) {
-            is CardsEffect.InternetError -> Unit
-            is CardsEffect.LogOut -> Unit
-            is CardsEffect.ShowMessage -> Unit
+            is CardsEffect.InternetError -> {
+                showSnackBar(getString(R.string.internet_error))
+            }
+
+            is CardsEffect.LogOut -> {
+                logOut()
+            }
+
+            is CardsEffect.ShowMessage -> {
+                showSnackBar(effect.message)
+            }
+
             is CardsEffect.Waiting -> Unit
         }
     }
@@ -162,6 +141,19 @@ class CardsFragment : Fragment() {
                 viewModel.newEvent(CardsEvent.SearchCards(it.toString()))
             }
         }
+    }
+
+    private fun showSnackBar(message: String) {
+        Snackbar.make(
+            binding.root,
+            message,
+            Snackbar.LENGTH_SHORT
+        ).show()
+    }
+
+    private fun logOut() {
+        findNavController().popBackStack()
+        findNavController().navigate(R.id.main_nav)
     }
 
     private fun showCreateCardDialog() {
@@ -290,5 +282,37 @@ class CardsFragment : Fragment() {
         dialog.show()
     }
 
+    private inner class CardClickListener : OnCardClickListener {
+        override fun onClick(item: CardModelPres) {
+            if (item.cardQr.isNotEmpty()) {
+                openQr(item.cardQr, BarcodeFormat.QR_CODE)
+            } else if (item.cardBarcode.isNotEmpty()) {
+                openQr(item.cardBarcode, BarcodeFormat.QR_CODE)
+            } else {
+                openQr(item.cardCode, BarcodeFormat.PDF_417)
+            }
+        }
+
+        override fun onLongClick(item: CardModelPres) {
+            removeCard(item.id)
+        }
+
+        override fun onAddCard() {
+            showCreateCardDialog()
+        }
+
+        override fun onUpdateCard(item: CardModelPres) {
+            viewModel.newEvent(
+                CardsEvent.UpdateCard(
+                    item.cardName,
+                    item.id,
+                    item.cardCode,
+                    item.cardQr,
+                    item.cardBarcode,
+                    item.cardHex
+                )
+            )
+        }
+    }
 }
 
