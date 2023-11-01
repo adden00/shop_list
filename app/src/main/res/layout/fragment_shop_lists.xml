@@ -5,7 +5,7 @@
     android:id="@+id/swipeRefresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".features.shop_lists_screen.presentation.ShopListsFragment">
+    tools:context=".features.shop_lists.presentation.ShopListsFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -135,7 +135,8 @@
             android:layout_marginBottom="12dp"
             android:src="@drawable/ic_cards"
             app:layout_constraintBottom_toTopOf="@+id/tvAccountIdTitle"
-            app:layout_constraintStart_toStartOf="@+id/tvAccountIdTitle" />
+            app:layout_constraintStart_toStartOf="@+id/tvAccountIdTitle"
+            tools:ignore="ContentDescription" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

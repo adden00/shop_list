@@ -5,10 +5,10 @@ import android.content.SharedPreferences
 import dagger.BindsInstance
 import dagger.Component
 import ru.usafe.shopping.core.utills.InternetChecker
-import ru.usafe.shopping.features.auth_screen.domain.AuthRepository
+import ru.usafe.shopping.features.auth.domain.AuthRepository
 import ru.usafe.shopping.features.cards.domain.CardsRepository
-import ru.usafe.shopping.features.shop_list_items_screen.domain.ShopListItemsRepository
-import ru.usafe.shopping.features.shop_lists_screen.domain.repository.ShopListsRepository
+import ru.usafe.shopping.features.shop_list_items.domain.ShopListItemsRepository
+import ru.usafe.shopping.features.shop_lists.domain.repository.ShopListsRepository
 import javax.inject.Singleton
 
 @Singleton

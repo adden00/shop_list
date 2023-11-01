@@ -10,10 +10,10 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import ru.usafe.shopping.core.Constants
-import ru.usafe.shopping.features.auth_screen.data.AuthApiClient
+import ru.usafe.shopping.features.auth.data.AuthApiClient
 import ru.usafe.shopping.features.cards.data.CardsApiClient
-import ru.usafe.shopping.features.shop_list_items_screen.data.ShopListItemApiClient
-import ru.usafe.shopping.features.shop_lists_screen.data.ShopListApiClient
+import ru.usafe.shopping.features.shop_list_items.data.ShopListItemApiClient
+import ru.usafe.shopping.features.shop_lists.data.ShopListApiClient
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 

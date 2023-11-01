@@ -10,8 +10,8 @@ import ru.usafe.shopping.app.di.AppComponent
 import ru.usafe.shopping.app.di.ScreenScope
 import ru.usafe.shopping.app.di.ViewModelKey
 import ru.usafe.shopping.core.ViewModelFactory
-import ru.usafe.shopping.features.auth_screen.presentation.AuthFragment
-import ru.usafe.shopping.features.auth_screen.presentation.AuthViewModel
+import ru.usafe.shopping.features.auth.presentation.AuthFragment
+import ru.usafe.shopping.features.auth.presentation.AuthViewModel
 
 @ScreenScope
 @Component(

@@ -10,8 +10,8 @@ import ru.usafe.shopping.app.di.AppComponent
 import ru.usafe.shopping.app.di.ScreenScope
 import ru.usafe.shopping.app.di.ViewModelKey
 import ru.usafe.shopping.core.ViewModelFactory
-import ru.usafe.shopping.features.start_screen.presentation.StartFragment
-import ru.usafe.shopping.features.start_screen.presentation.StartViewModel
+import ru.usafe.shopping.features.start.presentation.StartFragment
+import ru.usafe.shopping.features.start.presentation.StartViewModel
 
 @ScreenScope
 @Component(
