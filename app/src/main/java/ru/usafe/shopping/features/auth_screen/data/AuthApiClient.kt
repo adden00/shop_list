@@ -9,9 +9,6 @@ import ru.usafe.shopping.features.auth_screen.data.models.RegisterResponse
 
 interface AuthApiClient {
 
-    @POST ("CreateTestKey")
-    suspend fun createTestKey(): String
-
     @GET ("Authentication")
     suspend fun auth(
         @Query("key") token: String

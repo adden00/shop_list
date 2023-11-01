@@ -137,6 +137,19 @@ class CardsViewModel @Inject constructor(
                     }
                 }
             }
+
+            is CardsEvent.SearchCards -> {
+                if (event.query.isNotEmpty()) {
+                    _cardsState.update { it.copy(isSearching = true) }
+                    _cardsState.update {
+                        it.copy(searchedList = it.cardsList.filter { cardModel ->
+                            event.query.lowercase().trim() in cardModel.cardName.lowercase().trim()
+                        })
+                    }
+                } else
+                    _cardsState.update { it.copy(isSearching = false) }
+
+            }
         }
     }
 }

@@ -19,7 +19,7 @@ sealed interface CardsEvent {
         val cardHex: String
     ) : CardsEvent
 
-
     class RemoveCard(val id: Int) : CardsEvent
     object ClearCards : CardsEvent
+    class SearchCards(val query: String) : CardsEvent
 }

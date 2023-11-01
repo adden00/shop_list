@@ -31,14 +31,31 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
+        <androidx.appcompat.widget.AppCompatEditText
+            android:background="@drawable/bg_edit_text"
+            android:textAppearance="@style/text"
+            android:id="@+id/edSearch"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:padding="4dp"
+            android:paddingStart="8dp"
+            android:layout_marginTop="8dp"
+            android:hint="@string/search"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/appBar" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcCards"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appBar" />
+            app:layout_constraintTop_toBottomOf="@+id/edSearch" />
 
         <TextView
             android:id="@+id/tvEmptyList"
@@ -74,7 +91,8 @@
             android:focusable="true"
             android:src="@drawable/ic_add"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="ContentDescription" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

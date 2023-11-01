@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
@@ -126,7 +127,10 @@ class CardsFragment : Fragment() {
         binding.swipeRefresh.isRefreshing = false
         val addedList = state.cardsList
         Log.d("CardsFragment", addedList.toString())
-        adapter.submitList(state.cardsList)
+        if (state.isSearching)
+            adapter.submitList(state.searchedList)
+        else
+            adapter.submitList(state.cardsList)
     }
 
     private fun handleEffect(effect: CardsEffect) {
@@ -152,6 +156,11 @@ class CardsFragment : Fragment() {
                 viewModel.newEvent(CardsEvent.ClearCards)
             }
             true
+        }
+        binding.edSearch.addTextChangedListener {
+            if (it != null) {
+                viewModel.newEvent(CardsEvent.SearchCards(it.toString()))
+            }
         }
     }
 

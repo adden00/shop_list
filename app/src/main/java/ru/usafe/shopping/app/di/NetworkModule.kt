@@ -9,7 +9,6 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.scalars.ScalarsConverterFactory
 import ru.usafe.shopping.core.Constants
 import ru.usafe.shopping.features.auth_screen.data.AuthApiClient
 import ru.usafe.shopping.features.cards.data.CardsApiClient
@@ -74,7 +73,6 @@ class NetworkModule {
         return Retrofit.Builder()
             .client(client)
             .baseUrl(Constants.BASE_URL)
-            .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(
                 @OptIn(ExperimentalSerializationApi::class)
                 json.asConverterFactory("application/json".toMediaType())

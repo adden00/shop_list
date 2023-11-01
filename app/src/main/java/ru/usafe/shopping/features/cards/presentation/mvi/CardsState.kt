@@ -5,4 +5,6 @@ import ru.usafe.shopping.features.cards.presentation.models.CardModelPres
 data class CardsState(
     val isLoading: Boolean = false,
     val cardsList: List<CardModelPres> = listOf(),
+    val isSearching: Boolean = false,
+    val searchedList: List<CardModelPres> = listOf()
 )

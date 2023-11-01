@@ -49,4 +49,5 @@
     <string name="create_by_number">Create by number</string>
     <string name="clear_cards">Clear cards</string>
     <string name="do_you_want_to_delete_card">Do you want to delete card?</string>
+    <string name="search">Search…</string>
 </resources>
