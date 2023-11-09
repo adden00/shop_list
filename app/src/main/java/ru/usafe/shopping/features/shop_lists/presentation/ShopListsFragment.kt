@@ -119,7 +119,6 @@ class ShopListsFragment : Fragment() {
     }
 
 
-
     private fun subscribeOnState() {
         viewModel.shopListState
             .flowWithLifecycle(lifecycle)

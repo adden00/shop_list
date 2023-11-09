@@ -10,14 +10,19 @@ class AuthRepositoryImpl(private val api: AuthApiClient): AuthRepository {
         return response.isSuccess
     }
 
-    override suspend fun register(name: String, email: String, phone: String): String {
+    override suspend fun register(
+        name: String,
+        email: String,
+//        phone: String
+    ): String {
         val response = api.registerNewUser(
-            name, email, phone
+            name,
+            email
+//            phone
         )
         if (response.isSuccess) {
             return response.key
-        }
-        else
+        } else
             throw CouldNotCreateAccountException("creation failed")
     }
 }

@@ -17,7 +17,7 @@ interface AuthApiClient {
     @POST ("Registration")
     suspend fun registerNewUser (
         @Query("name") name: String,
-        @Query("mail") mail: String,
-        @Query("tel") phone: String
+        @Query("mail") mail: String
+//        @Query("tel") phone: String
     ): RegisterResponse
 }

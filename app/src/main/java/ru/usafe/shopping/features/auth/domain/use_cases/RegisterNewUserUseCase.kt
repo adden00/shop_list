@@ -14,7 +14,7 @@ class RegisterNewUserUseCase @Inject constructor(
         val newToken = repository.register(
             data.name,
             data.email,
-            data.phone
+//            data.phone
         )
         prefs.edit().putString(Constants.TOKEN_KEY, newToken).apply()
     }

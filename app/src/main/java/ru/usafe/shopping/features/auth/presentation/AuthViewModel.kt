@@ -28,13 +28,24 @@ class AuthViewModel @Inject constructor(
     val authEffect: StateFlow<AuthScreenEffect> get() = _authEffect.asStateFlow()
 
 
-    fun registerNewAccount(name: String, email: String, phone: String) {
+    fun registerNewAccount(
+        name: String,
+        email: String,
+//        phone: String
+    ) {
         _authScreenState.update { it.copy(isLoading = true) }
         viewModelScope.launch {
             try {
-                registerNewUserUseCase(UserRegisterData(name, email, phone))
+                registerNewUserUseCase(
+                    UserRegisterData(
+                        name,
+                        email,
+//                    phone
+                    )
+                )
                 _authEffect.update { AuthScreenEffect.NavigateToShopLists }
-            } catch (e: Throwable) {
+            } catch (e: Exception) {
+                Log.i("auth", "exeption: $e")
                 _authEffect.update { AuthScreenEffect.InternetError }
             } finally {
                 _authScreenState.update { it.copy(isLoading = false) }

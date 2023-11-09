@@ -17,7 +17,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.usafe.shopping.R
 import ru.usafe.shopping.app.getAppComponent
-import ru.usafe.shopping.core.Constants
 import ru.usafe.shopping.core.ViewModelFactory
 import ru.usafe.shopping.databinding.DialogInputBinding
 import ru.usafe.shopping.databinding.DialogRegisterBinding
@@ -134,30 +133,33 @@ class AuthFragment : Fragment() {
             edName.addTextChangedListener {
                 btnCreate.isEnabled = !it.isNullOrEmpty()
             }
-            edPhone.setOnFocusChangeListener { _, isFocised ->
-                if (isFocised && edPhone.text.isNullOrEmpty())
-                    edPhone.setText("+7")
-            }
+//            edPhone.setOnFocusChangeListener { _, isFocised ->
+//                if (isFocised && edPhone.text.isNullOrEmpty())
+//                    edPhone.setText("+7")
+//            }
 
             btnCreate.setOnClickListener {
-                if (edPhone.text?.length == Constants.PHONE_LENGTH && !checkEmail(edPhone.text.toString())) {
+                if (
+//                    edPhone.text?.length == Constants.PHONE_LENGTH &&
+                    checkEmail(edMail.text.toString())) {
                     viewModel.registerNewAccount(
                         edName.text.toString(),
                         edMail.text.toString(),
-                        edPhone.text.toString()
+//                        edPhone.text.toString()
                     )
                     dialog.dismiss()
-                } else if (!checkEmail(edMail.text.toString()))
+                } else
                     Snackbar.make(dialogBinding.root, "Write correct email!", Snackbar.LENGTH_SHORT)
                         .show()
-                else if (edPhone.text?.length != Constants.PHONE_LENGTH)
-                    Snackbar.make(dialogBinding.root, "Write correct phone", Snackbar.LENGTH_SHORT)
-                        .show()
+//                else if (edPhone.text?.length != Constants.PHONE_LENGTH)
+//                    Snackbar.make(dialogBinding.root, "Write correct phone", Snackbar.LENGTH_SHORT)
+//                        .show()
             }
         }
         dialog.window?.decorView?.setBackgroundResource(R.drawable.bg_dialog)
         dialog.show()
     }
+
 
     private fun checkEmail(email: String): Boolean {
         val pattern = Pattern.compile(
