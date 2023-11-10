@@ -238,7 +238,7 @@ class CardsFragment : Fragment() {
         dialog.show()
     }
 
-    private fun openQr(code: String, format: BarcodeFormat) {
+    private fun openQr(code: String, format: BarcodeFormat = BarcodeFormat.QR_CODE) {
         val dialogBinding =
             DialogQrBinding.inflate(LayoutInflater.from(requireContext()))
         val dialog =
@@ -250,6 +250,7 @@ class CardsFragment : Fragment() {
         dialog.window?.decorView?.setBackgroundResource(R.drawable.bg_dialog)
         dialog.show()
     }
+
 
     private fun getQrCodeBitmap(content: String, format: BarcodeFormat): Bitmap {
         val size = 512 //pixels
@@ -285,11 +286,11 @@ class CardsFragment : Fragment() {
     private inner class CardClickListener : OnCardClickListener {
         override fun onClick(item: CardModelPres) {
             if (item.cardQr.isNotEmpty()) {
-                openQr(item.cardQr, BarcodeFormat.QR_CODE)
+                openQr(item.cardQr)
             } else if (item.cardBarcode.isNotEmpty()) {
-                openQr(item.cardBarcode, BarcodeFormat.QR_CODE)
+                openQr(item.cardBarcode)
             } else {
-                openQr(item.cardCode, BarcodeFormat.PDF_417)
+                openQr(item.cardCode)
             }
         }
 

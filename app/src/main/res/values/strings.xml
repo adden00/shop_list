@@ -50,4 +50,5 @@
     <string name="clear_cards">Clear cards</string>
     <string name="do_you_want_to_delete_card">Do you want to delete card?</string>
     <string name="search">Search…</string>
+    <string name="write_correct_email">Write correct email!</string>
 </resources>

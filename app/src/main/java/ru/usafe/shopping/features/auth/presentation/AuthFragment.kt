@@ -149,7 +149,10 @@ class AuthFragment : Fragment() {
                     )
                     dialog.dismiss()
                 } else
-                    Snackbar.make(dialogBinding.root, "Write correct email!", Snackbar.LENGTH_SHORT)
+                    Snackbar.make(
+                        dialogBinding.root,
+                        getString(R.string.write_correct_email), Snackbar.LENGTH_SHORT
+                    )
                         .show()
 //                else if (edPhone.text?.length != Constants.PHONE_LENGTH)
 //                    Snackbar.make(dialogBinding.root, "Write correct phone", Snackbar.LENGTH_SHORT)
