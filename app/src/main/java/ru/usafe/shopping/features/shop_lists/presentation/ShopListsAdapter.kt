@@ -20,10 +20,10 @@ class ShopListsAdapter(private val listener: OnClickListener<ShopListModel>): Li
                 listener.onClick(item)
             }
             binding.imRemove.setOnClickListener {
-                listener.onLongClick(item)
+                listener.onRemove(item)
             }
             itemView.setOnLongClickListener {
-                listener.onLongClick(item)
+                listener.onRemove(item)
                 true
             }
         }

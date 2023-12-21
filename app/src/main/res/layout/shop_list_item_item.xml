@@ -34,8 +34,9 @@
             android:clickable="false"
             app:buttonTint="@drawable/check_box_tint"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/imRemove"
+            app:layout_constraintEnd_toStartOf="@id/imEdit"
             app:layout_constraintTop_toTopOf="parent" />
+
 
         <FrameLayout
             android:id="@+id/imRemove"
@@ -53,6 +54,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/ic_remove" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/imEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:background="@drawable/clickable_text_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imRemove"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_edit" />
         </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

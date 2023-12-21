@@ -50,8 +50,12 @@ class ShopListItemsFragment : Fragment() {
                 viewModel.newEvent(ShopListItemsEvent.CrossItem(currentShopList.id, item.id))
             }
 
-            override fun onLongClick(item: ShopListItemModel) {
+            override fun onRemove(item: ShopListItemModel) {
                 removeListDialog(item)
+            }
+
+            override fun onEdit(item: ShopListItemModel) {
+                showEditItemDialog(item)
             }
         })
     }
@@ -184,6 +188,37 @@ class ShopListItemsFragment : Fragment() {
                 viewModel.newEvent(
                     ShopListItemsEvent.AddNewItem(
                         currentShopList.id,
+                        edInput.text.toString()
+                    )
+                )
+                dialog.dismiss()
+            }
+            edInput.addTextChangedListener {
+                btnConfirm.isEnabled = !it.isNullOrEmpty()
+            }
+        }
+
+        dialog.window?.decorView?.setBackgroundResource(R.drawable.bg_dialog)
+        dialog.show()
+    }
+
+    private fun showEditItemDialog(item: ShopListItemModel) {
+        val dialogBinding =
+            DialogInputBinding.inflate(LayoutInflater.from(requireContext()))
+        val dialog =
+            AlertDialog.Builder(requireContext()).apply { setView(dialogBinding.root) }.create()
+
+        with(dialogBinding) {
+            edInput.hint = getString(R.string.name)
+            edInput.setText(item.name)
+            tvTitle.text = getString(R.string.edit)
+            btnConfirm.text = getString(R.string.ok)
+            btnConfirm.setOnClickListener {
+                viewModel.newEvent(
+
+                    ShopListItemsEvent.EditItem(
+                        currentShopList.id,
+                        item.id,
                         edInput.text.toString()
                     )
                 )

@@ -20,13 +20,16 @@ class ShopListItemsAdapter(private val listener: OnClickListener<ShopListItemMod
 
             binding.checkbox.isChecked = item.isCrossed
             binding.imRemove.setOnClickListener {
-                listener.onLongClick(item)
+                listener.onRemove(item)
+            }
+            binding.imEdit.setOnClickListener {
+                listener.onEdit(item)
             }
             itemView.setOnClickListener {
                 listener.onClick(item)
             }
             itemView.setOnLongClickListener {
-                listener.onLongClick(item)
+                listener.onRemove(item)
                 true
             }
             binding.tvName.text = item.name

@@ -123,6 +123,29 @@ class ShopListItemsViewModel @Inject constructor(
                 isSubscribed = false
                 Log.d("UpdateList", "stopped")
             }
+
+            is ShopListItemsEvent.EditItem -> {
+                _shopListItemsState.update { it.copy(isUpdating = true) }
+                viewModelScope.launch {
+                    try {
+                        removeItemUseCase(
+                            event.listId,
+                            event.itemId
+                        ).map { it.toPresentation() }
+                        val newList =
+                            addNewItemUseCase(
+                                event.listId,
+                                event.newName
+                            ).map { it.toPresentation() }
+                        _shopListItemsState.update { it.copy(list = newList) }
+                    } catch (e: Exception) {
+                        _shopListItemsEffect.update { ShopListItemsEffect.ShowInternetError }
+                    } finally {
+                        _shopListItemsState.update { it.copy(isUpdating = false) }
+                        _shopListItemsEffect.update { ShopListItemsEffect.Waiting }
+                    }
+                }
+            }
         }
     }
 }

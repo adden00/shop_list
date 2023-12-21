@@ -52,9 +52,12 @@ class ShopListsFragment : Fragment() {
                     args
                 )
             }
-            override fun onLongClick(item: ShopListModel) {
+
+            override fun onRemove(item: ShopListModel) {
                 removeListDialog(item)
             }
+
+            override fun onEdit(item: ShopListModel) = Unit
         })
     }
 

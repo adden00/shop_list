@@ -47,5 +47,7 @@
     <string name="do_you_want_to_delete_card">Вы уверены что хотите удалить карту?</string>
     <string name="search">Поиск…</string>
     <string name="write_correct_email">Введите корректный email!</string>
+    <string name="edit">Редактировать</string>
+
 
 </resources>
