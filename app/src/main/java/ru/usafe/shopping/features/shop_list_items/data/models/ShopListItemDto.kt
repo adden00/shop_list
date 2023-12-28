@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ShopListItemDto(
 
-    @SerialName("created")
+    @SerialName("n")
     val created: String,
 
     @SerialName("name")

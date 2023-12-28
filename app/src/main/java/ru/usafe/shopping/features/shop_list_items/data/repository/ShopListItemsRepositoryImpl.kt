@@ -29,4 +29,18 @@ class ShopListItemsRepositoryImpl(private val api: ShopListItemApiClient) :
         val response = api.removeFromList(listId, itemId)
         return response.isSuccess
     }
+
+    override suspend fun updateItem(itemId: Int, newName: String): Boolean {
+        val response = api.updateItem(itemId, newName)
+        return response.isSuccess
+    }
+
+    override suspend fun moveItem(startId: Int, toId: Int, listId: Int): Boolean {
+        val response = api.moveItem(
+            startId,
+            toId,
+            listId
+        )
+        return response.isSuccess
+    }
 }

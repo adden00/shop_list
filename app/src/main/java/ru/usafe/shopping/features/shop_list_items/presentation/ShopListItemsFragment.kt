@@ -12,7 +12,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -33,7 +35,6 @@ import ru.usafe.shopping.features.shop_lists.presentation.models.ShopListModel
 import javax.inject.Inject
 
 class ShopListItemsFragment : Fragment() {
-
 
 
     private val currentShopList: ShopListModel by lazy {
@@ -63,6 +64,61 @@ class ShopListItemsFragment : Fragment() {
 
     private var _binding: FragmentShopListItemsBinding? = null
     private val binding get() = _binding!!
+
+    private val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
+        ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+        ItemTouchHelper.ACTION_STATE_IDLE
+    ) {
+        private var movedItemFrom = -1
+        private var movedItemTo = -1
+        override fun isItemViewSwipeEnabled(): Boolean {
+            return false
+        }
+
+        override fun onMove(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
+        ): Boolean {
+
+//            adapter.onDrag(viewHolder.adapterPosition, target.adapterPosition)
+            viewModel.newEvent(
+                ShopListItemsEvent.OnDrag(
+                    viewHolder.adapterPosition,
+                    target.adapterPosition
+                )
+            )
+            movedItemFrom = adapter.currentList[viewHolder.adapterPosition].id
+            movedItemTo = adapter.currentList[target.adapterPosition].id
+            return true
+        }
+
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+//            removeListDialog(adapter.currentList[viewHolder.adapterPosition])
+        }
+
+        override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
+            super.onSelectedChanged(viewHolder, actionState)
+            val moving = actionState == ItemTouchHelper.ACTION_STATE_DRAG
+            binding.swipeRefresh.isEnabled = !moving
+        }
+
+        override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
+            super.clearView(recyclerView, viewHolder)
+            if (movedItemFrom != -1 && movedItemTo != -1) {
+                viewModel.newEvent(
+                    ShopListItemsEvent.MoveItem(
+                        movedItemFrom,
+                        movedItemTo,
+                        currentShopList.id
+                    )
+                )
+                movedItemFrom = -1
+                movedItemTo = -1
+            }
+        }
+
+    })
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -127,6 +183,7 @@ class ShopListItemsFragment : Fragment() {
             is ShopListItemsEffect.ShowInternetError -> {
                 showSnackBar(getString(R.string.internet_error))
             }
+
             is ShopListItemsEffect.Waiting -> Unit
         }
     }
@@ -141,6 +198,7 @@ class ShopListItemsFragment : Fragment() {
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.newEvent(ShopListItemsEvent.LoadAllItems(currentShopList.id))
         }
+        itemTouchHelper.attachToRecyclerView(binding.rcShopListItems)
     }
 
     private fun showSnackBar(message: String) {
@@ -216,7 +274,7 @@ class ShopListItemsFragment : Fragment() {
             btnConfirm.setOnClickListener {
                 viewModel.newEvent(
 
-                    ShopListItemsEvent.EditItem(
+                    ShopListItemsEvent.UpdateItem(
                         currentShopList.id,
                         item.id,
                         edInput.text.toString()

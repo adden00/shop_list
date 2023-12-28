@@ -14,7 +14,9 @@ import ru.usafe.shopping.core.Constants
 import ru.usafe.shopping.features.shop_list_items.domain.use_cases.AddNewItemUseCase
 import ru.usafe.shopping.features.shop_list_items.domain.use_cases.CrossItemUseCase
 import ru.usafe.shopping.features.shop_list_items.domain.use_cases.LoadAllItemsUseCase
+import ru.usafe.shopping.features.shop_list_items.domain.use_cases.MoveItemUseCase
 import ru.usafe.shopping.features.shop_list_items.domain.use_cases.RemoveItemUseCase
+import ru.usafe.shopping.features.shop_list_items.domain.use_cases.UpdateItemUseCase
 import ru.usafe.shopping.features.shop_list_items.presentation.mvi.ShopListItemsEffect
 import ru.usafe.shopping.features.shop_list_items.presentation.mvi.ShopListItemsEvent
 import ru.usafe.shopping.features.shop_list_items.presentation.mvi.ShopListItemsState
@@ -25,7 +27,10 @@ class ShopListItemsViewModel @Inject constructor(
     private val addNewItemUseCase: AddNewItemUseCase,
     private val loadAllItemsUseCase: LoadAllItemsUseCase,
     private val removeItemUseCase: RemoveItemUseCase,
-    private val crossItemUseCase: CrossItemUseCase
+    private val crossItemUseCase: CrossItemUseCase,
+    private val moveItemUseCase: MoveItemUseCase,
+    private val updateItemUseCase: UpdateItemUseCase
+
 ) : ViewModel() {
     private var isSubscribed = false
     private val _shopListItemsState = MutableStateFlow(ShopListItemsState())
@@ -124,17 +129,57 @@ class ShopListItemsViewModel @Inject constructor(
                 Log.d("UpdateList", "stopped")
             }
 
-            is ShopListItemsEvent.EditItem -> {
+//            is ShopListItemsEvent.EditItem -> {
+//                _shopListItemsState.update { it.copy(isUpdating = true) }
+//                viewModelScope.launch {
+//                    try {
+//                        removeItemUseCase(
+//                            event.listId,
+//                            event.itemId
+//                        ).map { it.toPresentation() }
+//                        val newList =
+//                            addNewItemUseCase(
+//                                event.listId,
+//                                event.newName
+//                            ).map { it.toPresentation() }
+//                        _shopListItemsState.update { it.copy(list = newList) }
+//                    } catch (e: Exception) {
+//                        _shopListItemsEffect.update { ShopListItemsEffect.ShowInternetError }
+//                    } finally {
+//                        _shopListItemsState.update { it.copy(isUpdating = false) }
+//                        _shopListItemsEffect.update { ShopListItemsEffect.Waiting }
+//                    }
+//                }
+//            }
+
+            is ShopListItemsEvent.MoveItem -> {
                 _shopListItemsState.update { it.copy(isUpdating = true) }
                 viewModelScope.launch {
                     try {
-                        removeItemUseCase(
+                        val newList = moveItemUseCase(
+                            event.startId,
+                            event.toId,
                             event.listId,
-                            event.itemId
                         ).map { it.toPresentation() }
+
+                        _shopListItemsState.update { it.copy(list = newList) }
+                    } catch (e: Exception) {
+                        _shopListItemsEffect.update { ShopListItemsEffect.ShowInternetError }
+                    } finally {
+                        _shopListItemsState.update { it.copy(isUpdating = false) }
+                        _shopListItemsEffect.update { ShopListItemsEffect.Waiting }
+                    }
+                }
+            }
+
+            is ShopListItemsEvent.UpdateItem -> {
+                _shopListItemsState.update { it.copy(isUpdating = true) }
+                viewModelScope.launch {
+                    try {
                         val newList =
-                            addNewItemUseCase(
+                            updateItemUseCase(
                                 event.listId,
+                                event.itemId,
                                 event.newName
                             ).map { it.toPresentation() }
                         _shopListItemsState.update { it.copy(list = newList) }
@@ -145,6 +190,23 @@ class ShopListItemsViewModel @Inject constructor(
                         _shopListItemsEffect.update { ShopListItemsEffect.Waiting }
                     }
                 }
+            }
+
+            is ShopListItemsEvent.OnDrag -> {
+                val list = _shopListItemsState.value.list.toMutableList()
+                val movingItem = list[event.startPos]
+                if (event.startPos > event.toPos) {
+                    for (i in event.startPos downTo event.toPos + 1) {
+                        list[i] = list[i - 1]
+                    }
+                    list[event.toPos] = movingItem
+                } else {
+                    for (i in event.startPos until event.toPos) {
+                        list[i] = list[i + 1]
+                    }
+                    list[event.toPos] = movingItem
+                }
+                _shopListItemsState.update { it.copy(list = list.toList()) }
             }
         }
     }

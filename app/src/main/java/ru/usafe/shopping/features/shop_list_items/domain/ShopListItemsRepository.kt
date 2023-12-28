@@ -7,4 +7,6 @@ interface ShopListItemsRepository {
     suspend fun addNewItem(listId: Int, itemName: String): Boolean
     suspend fun crossItem(itemId: Int): Boolean
     suspend fun removeItem(listId: Int, itemId: Int): Boolean
+    suspend fun updateItem(itemId: Int, newName: String): Boolean
+    suspend fun moveItem(startId: Int, toId: Int, listId: Int): Boolean
 }
