@@ -48,6 +48,8 @@
     <string name="search">Поиск…</string>
     <string name="write_correct_email">Введите корректный email!</string>
     <string name="edit">Редактировать</string>
+    <string name="recent_tokens">Недавние входы:</string>
+
 
 
 </resources>
