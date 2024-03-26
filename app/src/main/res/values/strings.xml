@@ -53,4 +53,5 @@
     <string name="write_correct_email">Write correct email!</string>
     <string name="edit">Edit</string>
     <string name="ok" translatable="false">OK</string>
+    <string name="recent_tokens">Recent access:</string>
 </resources>

@@ -30,6 +30,11 @@ class AuthFragment : Fragment() {
 
     private var _binding: FragmentAuthBinding? = null
     private val binding: FragmentAuthBinding get() = _binding!!
+    private val recentAdapter by lazy {
+        SavedTokensAdapter {
+            viewModel.logInAccount(it)
+        }
+    }
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -74,6 +79,7 @@ class AuthFragment : Fragment() {
 
     private fun render(state: AuthScreenState) {
         binding.pbar.visibility = if (state.isLoading) View.VISIBLE else View.GONE
+        recentAdapter.submitList(state.recentTokens)
     }
 
     private fun handleEffect(effect: AuthScreenEffect) {
@@ -100,6 +106,7 @@ class AuthFragment : Fragment() {
         binding.btnCreateNew.setOnClickListener {
             openRegisterDialog()
         }
+        binding.rcRecentTokens.adapter = recentAdapter
     }
 
     private fun openLoginDialog() {

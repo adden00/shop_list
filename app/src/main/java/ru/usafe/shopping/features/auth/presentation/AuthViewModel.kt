@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
+import ru.usafe.shopping.core.AppSettings
 import ru.usafe.shopping.features.auth.domain.models.UserRegisterData
 import ru.usafe.shopping.features.auth.domain.use_cases.LogInUseCase
 import ru.usafe.shopping.features.auth.domain.use_cases.RegisterNewUserUseCase
@@ -18,7 +19,8 @@ import javax.inject.Inject
 
 class AuthViewModel @Inject constructor(
     private val logInUseCase: LogInUseCase,
-    private val registerNewUserUseCase: RegisterNewUserUseCase
+    private val registerNewUserUseCase: RegisterNewUserUseCase,
+    private val appSettings: AppSettings
 ) : ViewModel() {
 
     private val _authScreenState = MutableStateFlow(AuthScreenState())
@@ -27,6 +29,10 @@ class AuthViewModel @Inject constructor(
     private val _authEffect = MutableStateFlow<AuthScreenEffect>(AuthScreenEffect.Waiting)
     val authEffect: StateFlow<AuthScreenEffect> get() = _authEffect.asStateFlow()
 
+    init {
+        val recentTokens = appSettings.allTokens //todo add removing from settings
+        _authScreenState.update { it.copy(recentTokens = recentTokens) }
+    }
 
     fun registerNewAccount(
         name: String,

@@ -1,12 +1,14 @@
 package ru.usafe.shopping.features.shop_lists.domain.use_cases
 
-import android.content.SharedPreferences
-import ru.usafe.shopping.core.Constants
+import ru.usafe.shopping.core.AppSettings
 import javax.inject.Inject
 
-class CopyAccountIdUseCase @Inject constructor(private val prefs: SharedPreferences) {
+class CopyAccountIdUseCase @Inject constructor(
+    private val appSettings: AppSettings
+
+) {
     operator fun invoke(copy: (String) -> Unit) {
-        val token = prefs.getString(Constants.TOKEN_KEY, null)
+        val token = appSettings.activeToken
         token?.let {
             copy(it)
         }

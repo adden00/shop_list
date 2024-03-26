@@ -1,7 +1,6 @@
 package ru.usafe.shopping.features.cards.domain.use_cases
 
-import android.content.SharedPreferences
-import ru.usafe.shopping.core.Constants
+import ru.usafe.shopping.core.AppSettings
 import ru.usafe.shopping.core.TokenIsNullException
 import ru.usafe.shopping.features.cards.domain.CardsRepository
 import ru.usafe.shopping.features.cards.domain.models.CardModel
@@ -9,7 +8,7 @@ import javax.inject.Inject
 
 class UpdateCardUseCase @Inject constructor(
     private val repository: CardsRepository,
-    private val prefs: SharedPreferences
+    private val appSettings: AppSettings
 ) {
     suspend operator fun invoke(
         cardName: String,
@@ -19,7 +18,7 @@ class UpdateCardUseCase @Inject constructor(
         cardBarcode: String,
         cardHex: String
     ): List<CardModel> {
-        val token = prefs.getString(Constants.TOKEN_KEY, null)
+        val token = appSettings.activeToken
         if (token == null) {
             throw TokenIsNullException("token is null!")
         } else {

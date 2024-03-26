@@ -1,11 +1,12 @@
 package ru.usafe.shopping.features.shop_lists.domain.use_cases
 
-import android.content.SharedPreferences
-import ru.usafe.shopping.core.Constants
+import ru.usafe.shopping.core.AppSettings
 import javax.inject.Inject
 
-class LogOutUseCase @Inject constructor(private val prefs: SharedPreferences) {
+class LogOutUseCase @Inject constructor(
+    private val appSettings: AppSettings
+) {
     operator fun invoke() {
-        prefs.edit().remove(Constants.TOKEN_KEY).apply()
+        appSettings.activeToken = null
     }
 }
