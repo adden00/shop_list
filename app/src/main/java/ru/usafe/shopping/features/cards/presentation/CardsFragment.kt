@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -46,11 +47,10 @@ class CardsFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     private val viewModel: CardsViewModel by activityViewModels { viewModelFactory }
+    private var defaultBrightParams: Float? = null
     private val adapter by lazy {
         CardsAdapter(CardClickListener())
     }
-
-
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -73,6 +73,7 @@ class CardsFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        defaultBrightParams = requireActivity().window.attributes.screenBrightness
         setUi()
         subscribeOnState()
     }
@@ -247,11 +248,21 @@ class CardsFragment : Fragment() {
         dialogBinding.btClose.setOnClickListener {
             dialog.dismiss()
         }
+        dialog.setOnDismissListener {
+            defaultBrightParams?.let {
+                setBrightness(it)
+            }
+        }
         dialog.window?.decorView?.setBackgroundResource(R.drawable.bg_dialog)
         dialog.show()
+        setBrightness(1f)
     }
 
-
+    private fun setBrightness(level: Float) {
+        val layoutParams: WindowManager.LayoutParams = requireActivity().window.attributes
+        layoutParams.screenBrightness = level
+        requireActivity().window.attributes = layoutParams
+    }
     private fun getQrCodeBitmap(content: String, format: BarcodeFormat): Bitmap {
         val size = 512 //pixels
         val bits = MultiFormatWriter().encode(content, format, size, size)
@@ -288,9 +299,9 @@ class CardsFragment : Fragment() {
             if (item.cardQr.isNotEmpty()) {
                 openQr(item.cardQr)
             } else if (item.cardBarcode.isNotEmpty()) {
-                openQr(item.cardBarcode)
+                openQr(item.cardBarcode, BarcodeFormat.CODE_128)
             } else {
-                openQr(item.cardCode)
+                openQr(item.cardCode, BarcodeFormat.CODE_128)
             }
         }
 
